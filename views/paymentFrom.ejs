@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+    <script>
+        const paypal_details = {
+            client_id: "AcunbNCUthgtaNBxaj1whni2muQBBUkoJEDCMI9BYcNz6l3BbYFDU4hylVpMt-uQX0ys6gyMt3PC5aAD",
+            secret: "EG4ldVbevfCMeEIQ_Mp4PvjWFJjDDbRAIS1lbTlGUWgDRdAYz5wdPukKWruLJTIeffH0ynY9vv8_Y-G3"
+        }
+
+        console.log('init paypal...');
+        var script = document.createElement('script');
+        script.onload = (paypal) => {
+            //do stuff with the script
+            renderPaypal();
+        };
+        script.src = `https://www.paypal.com/sdk/js?client-id=${paypal_details.client_id}`;
+
+        document.head.appendChild(script);
+
+        function renderPaypal() {
+            paypal.Buttons({
+                createOrder: function(data, actions) {
+                    // This function sets up the details of the transaction, including the amount and line item details.
+                    return actions.order.create({
+                        purchase_units: [{
+                            amount: {
+                                value: '<%= amount%>'
+                            }
+                        }]
+                    });
+                },
+                onApprove: function(data, actions) {
+                    console.log('data...', data);
+                    // This function captures the funds from the transaction.
+                    return actions.order.capture().then(function(details) {
+                        // This function shows a transaction success message to your buyer.
+                        // alert('Transaction completed by ' + details.payer.name.given_name);
+                        console.log(details);
+                        location.replace('/payment/success');
+                    });
+                }
+            }).render('body');
+        }
+    </script>
+    <title>Payment</title>
+</head>
+<body>
+
+</body>
+
+<style>
+    body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(255, 255, 255, 0);
+    }
+</style>
+
+</html>

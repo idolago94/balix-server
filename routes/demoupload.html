@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <title>Upload Your Photo</title>
+</head>
+<body>
+    <div id="users"></div>
+    <div class="form-box">
+        <div>Login: </div>
+        <input
+            type="text"
+            id="login-username"
+        />
+        <input
+            type="text"
+            id="login-password"
+        />
+        <button id="login-button">LOGIN</button>
+        <button id="actions-button">MY ACTIONS</button>
+        <div id="actions-view"></div>
+    </div>
+    <div class="form-box">
+        <div>store new user: </div>
+        <form class="mt-4"
+            action="/users/signup"
+            method="POST"
+            enctype="multipart/form-data"
+        >
+            <div class="form-group">
+                <div>Profile Image: </div>
+                <input
+                    type="file"
+                    name="file"
+                    id="input"
+                    class="form-control-file border"
+                />
+            </div>
+            <div class="form-group">
+                <div>Username: </div>
+                <input 
+                    type="text"
+                    name="username"
+                    id="input-username"
+                />  
+            </div>
+            <div class="form-group">
+                <div>Password: </div>
+                <input 
+                    type="text"
+                    name="password"
+                    id="input-password"
+                />  
+            </div>
+            <div class="form-group">
+                <div>email: </div>
+                <input 
+                    type="text"
+                    name="email"
+                    id="input-email"
+                />  
+            </div>
+            <div class="form-group">
+                <div>gender: </div>
+                <input 
+                    type="text"
+                    name="gender"
+                    id="input-gender"
+                />  
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    <div class="form-box">
+        <input id="user-search" type="text" placeholder="user id" />
+        <button id="search-button">SEARCH</button>
+        <button id="all-users">GET ALL USERS</button>
+        <div id="profile-view"></div>
+    </div>
+    <div class="form-box">
+        <!-- <input id="user-follow" type="text" placeholder="my user" /> -->
+        <input id="user-to-follow" type="text" placeholder="user to follow" />
+        <button id="follow-button">START FOLLOW</button>
+        <button id="stop-follow-button">STOP FOLLOW</button>
+        <button id="get-my-following">MY FOLLOWING USERS</button>
+        <div id="response-view"></div>
+    </div>
+    <div class="form-box">
+        <div>upload image: </div>
+        <input
+            type="file"
+            name="file"
+            id="input-upload"
+        />
+        <button id="upload-button">UPLOAD</button>
+    </div>
+    <div class="form-box">
+            <div>get image: </div>
+            <input
+                type="text"
+                id="image-id"
+                placeholder="image id"
+            />
+            <input
+                type="text"
+                id="image-type"
+                value='image/jpeg'
+            />
+            <button id="search-image-button">SEARCH</button>
+            <button id="get-my-images">MY IMAGES</button>
+            <div id="images-view"></div>
+    </div>
+    <div class="form-box">
+        <input id="search-input" type="text" />
+        <button id="search">SEARCH</button>
+    </div>
+    <div class="form-box">
+        <button id="pay-with-paypal">Pay with paypal</button>
+    </div>
+</body>
+
+<script>
+    function buildUserCard(userData) {
+        let userBox = document.createElement('div');
+
+        let username = document.createElement('div');
+        username.className = 'username';
+        username.innerHTML = userData.username;
+        userBox.append(username);
+
+        let email = document.createElement('div');
+        email.className = 'username';
+        email.innerHTML = userData.email;
+        userBox.append(email);
+
+        let profileImage = document.createElement('img');
+        profileImage.src = userData.profileImage.base64;
+        profileImage.className = 'image';
+        userBox.append(profileImage);
+
+        $('#profile-view').append(userBox);
+    }
+    function buildImageCard(image, i) {
+        let div = document.createElement('div');
+        div.innerHTML = `cash: ${myUser.uploads[i].cash || 0}$ | hearts: ${myUser.uploads[i].hearts || 0}`;
+
+        let cash_btn = document.createElement('button');
+        cash_btn.onclick = () => {
+            fetch(`http://localhost:3000/images/updateAchievement?id=${myUser._id}&image=${image.id}`,
+            {
+                method: 'PUT',
+                body: JSON.stringify({cash: 10, hearts: 0}),
+                headers: {
+                'Content-Type': 'application/json'
+                }
+            }).then(res => res.json()).then(response => {
+                console.log(response);
+            })
+        }
+        cash_btn.innerHTML = '+10$';
+        div.append(cash_btn);
+
+        let heart_btn = document.createElement('button');
+        heart_btn.onclick = () => {
+            fetch(`http://localhost:3000/images/updateAchievement?id=${myUser._id}&image=${image.id}`,
+            {
+                method: 'PUT',
+                body: JSON.stringify({cash: 0, hearts: 5}),
+                headers: {
+                'Content-Type': 'application/json'
+                }
+            }).then(res => res.json()).then(response => {
+                console.log(response);
+            })
+        }
+        heart_btn.innerHTML = '+5❤';
+        div.append(heart_btn);
+
+        let img = document.createElement('img');
+        img.className = 'image';
+        img.src = image.base64;
+        div.append(img);
+
+        $('#images-view').append(div);
+    }
+    let myUser;
+
+    $(document).ready(() => {
+
+        fetch(`http://localhost:3000/users/getAll`)
+        .then(res => res.json()).then((response) => {
+            console.log(response);
+            response.map((user) => {
+                let div = document.createElement('div');
+                div.id = user.username;
+                div.innerHTML = `${user.username} #${user._id}`;
+                $('#users').append(div);
+            });
+        });
+
+        $('#pay-with-paypal').on('click', () => {
+            fetch(`http://localhost:3000/payment/paypal`);
+        })
+
+        $('#search').on('click', () => {
+            fetch(`http://localhost:3000/search/?word=${$('#search-input').val()}`)
+                .then(res => res.json()).then(response => {
+                    console.log(response);
+                    debugger;
+            })
+        })
+
+        $('#actions-button').on('click', () => {
+            fetch(`http://localhost:3000/actions/getActions?id=${myUser._id}`)
+            .then(res => res.json()).then(response => {
+                console.log(response);
+                response.map((act) => {
+                    let div = document.createElement('div');
+                    div.innerHTML = `#${act.type} active: ${act.active_user_id}  disactive: ${act.disactive_user_id || ''} image: ${act.image_id || ''}`;
+                    $('#actions-view').append(div);
+                })
+            })
+        })
+        
+        $('#login-button').on('click', () => {
+            fetch(`http://localhost:3000/users/login`,
+            {
+                method: 'POST',
+                body: JSON.stringify({username: $('#login-username').val(), password: $('#login-password').val()}),
+                headers: {
+                'Content-Type': 'application/json'
+                }
+            }).then(res => res.json()).then(response => {
+                console.log(response);
+                $(`#${response.username}`).css('color', 'red');
+                myUser = response;
+            })
+        })
+
+        $('#get-my-following').on('click', () => {
+            fetch(`http://localhost:3000/users/getUsers?ids=${myUser.following.join(',')}`)
+            .then(res => res.json()).then(response => {
+                console.log(response);
+                response.map((user) => {
+                    let div = document.createElement('div');
+                    div.innerHTML = `${user.username} #${user._id}`;
+                    $('#response-view').append(div);
+                });
+            })
+        })
+
+        $('#get-my-images').on('click', () => {
+            for(let i=0; i<myUser.uploads.length; i++) {
+                buildImageCard(myUser.uploads[i], i);
+            }
+            // ids_array = [];
+            // for(let i=0; i<myUser.uploads.length; i++) {
+            //     ids_array.push(`${myUser.uploads[i].id}:${myUser.uploads[i].contentType}`);
+            // }
+            // fetch(`http://localhost:3000/images/getImages?images=${ids_array.join(',')}&type=${$('#image-type').val()}`)
+            // .then(res => res.json()).then((response) => {
+            //     console.log(response);
+            //     for(let i=0; i<response.length; i++) {
+            //         buildImageCard(response[i], i);
+            //     }
+            // })
+        })
+
+        $('#search-image-button').on('click', () => {
+            fetch(`http://localhost:3000/images/getSingleImage?id=${$('#image-id').val()}&type=${$('#image-type').val()}`)
+            .then(res => res.json()).then((response) => {
+                console.log(response);
+                // let img = document.createElement('img');
+                // img.className = 'image';
+                // img.src = response.base64;
+                // $('#images-view').append(img);
+                buildImageCard(response);
+            })
+        })
+
+        $('#upload-button').on('click', () => {
+            let formData = new FormData();
+            let file = $('#input-upload');
+            console.log(file.val());
+            formData.append('file', file[0].files[0]);
+
+            fetch(`http://localhost:3000/images/upload?id=${myUser._id}`,
+            {
+                method: 'POST',
+                body: formData
+            }).then(res => res.json()).then((response) => {
+                console.log(response);
+            })
+        })
+
+        $('#stop-follow-button').on('click', () => {
+            let follow_ids = myUser.following.slice();
+            let stop_follow_id = $('#user-to-follow').val()
+            follow_ids = follow_ids.filter(f => f != stop_follow_id);
+            fetch(`http://localhost:3000/users/stopFollow?id=${myUser._id}`,
+                {
+                    method: 'PUT',
+                    body: JSON.stringify({follow: follow_ids, user_stop: $('#user-to-follow').val()}),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(res => res.json()).then(response => {
+                console.log(response);
+                $('#response-view').innerHTML = JSON.stringify(response);
+                if(response.ok) {
+                    myUser.following = follow_ids;
+                }
+            })
+        })
+
+        $('#follow-button').on('click', () => {
+            let follow_ids = myUser.following;
+            follow_ids.push($('#user-to-follow').val());
+            fetch(`http://localhost:3000/users/startFollow?id=${myUser._id}`,
+                {
+                    method: 'PUT',
+                    body: JSON.stringify({follow: follow_ids}),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(res => res.json()).then(response => {
+                console.log(response);
+                $('#response-view').innerHTML = JSON.stringify(response);
+                if(response.ok) {
+                    myUser.following = follow_ids
+                }
+            })
+        })
+        
+        $("#all-users").on('click', () => {
+            fetch(`http://localhost:3000/users/getAll`)
+            .then(res => res.json()).then(response => {
+                console.log(response);
+                response.map((userData) => {
+                    buildUserCard(userData);
+                })
+            })
+        })
+
+        $("#search-button").on('click', () => {
+            fetch(`http://localhost:3000/users/getSingleUser?id=${$('#user-search').val()}`)
+            .then(res => res.json()).then(response => {
+                console.log(response);
+                buildUserCard(response);
+            })
+        })
+    })
+</script>
+
+<style>
+    .photos {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    .image {
+        width: 30%;
+        height: 200px;
+    }
+    .username {
+        font-size: 20px;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    #pay-with-paypal {
+        background-color: dodgerblue;
+        color: white;
+    }
+
+    .form-box {
+        border-radius: 10px;
+        border: 2px solid black;
+        padding: 10px;
+    }
+</style>
+
+</html>

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="d419cfc8-53d3-4627-9cbb-825499bd0c47" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/controllers/content.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/helpers/buffer.convert.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/middleware/content.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/Content.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/node_modules/base64-arraybuffer/index.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/node_modules/base64-arraybuffer/lib/base64-arraybuffer.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/node_modules/base64-arraybuffer/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/routes/content.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/actions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/images.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/images.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/search.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/search.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/users.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/users.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database.js" beforeDir="false" afterPath="$PROJECT_DIR$/database.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/helpers/actions.type.js" beforeDir="false" afterPath="$PROJECT_DIR$/helpers/actions.type.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/middleware/actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/middleware/actions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/middleware/convert.js" beforeDir="false" afterPath="$PROJECT_DIR$/middleware/convert.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/middleware/files.js" beforeDir="false" afterPath="$PROJECT_DIR$/middleware/files.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/middleware/images.js" beforeDir="false" afterPath="$PROJECT_DIR$/middleware/images.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/middleware/search.js" beforeDir="false" afterPath="$PROJECT_DIR$/middleware/search.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/middleware/upload.js" beforeDir="false" afterPath="$PROJECT_DIR$/middleware/upload.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/middleware/users.js" beforeDir="false" afterPath="$PROJECT_DIR$/middleware/users.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/User.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/User.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/users.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/users.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../balix/ios/balix.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/../balix/ios/balix.xcodeproj/project.pbxproj" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="balix-server" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Pug File" />
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="JsFlowSettings">
+    <service-enabled>true</service-enabled>
+    <exe-path />
+    <other-services-enabled>true</other-services-enabled>
+    <auto-save>true</auto-save>
+  </component>
+  <component name="ProjectId" id="1XG0Qa5ZtUdzHNlqxP1VdJUqRlJ" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/views" />
+    <property name="nodejs_package_manager_path" value="npm" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/assets" />
+      <recent name="$PROJECT_DIR$/routes" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/views" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="start" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="start" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="npm.start" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="d419cfc8-53d3-4627-9cbb-825499bd0c47" name="Default Changelist" comment="" />
+      <created>1580657108387</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1580657108387</updated>
+      <workItem from="1580657109575" duration="334000" />
+      <workItem from="1580657465879" duration="1414000" />
+      <workItem from="1580660492574" duration="23167000" />
+      <workItem from="1581085690196" duration="7601000" />
+      <workItem from="1581095509998" duration="3239000" />
+      <workItem from="1581245098581" duration="3588000" />
+      <workItem from="1581276898565" duration="16214000" />
+      <workItem from="1581687196966" duration="9628000" />
+      <workItem from="1581770788097" duration="26628000" />
+      <workItem from="1582020285392" duration="6198000" />
+      <workItem from="1582049707278" duration="16744000" />
+      <workItem from="1582381545282" duration="1285000" />
+      <workItem from="1582383589261" duration="8779000" />
+      <workItem from="1582448133345" duration="2584000" />
+      <workItem from="1582456991321" duration="214000" />
+      <workItem from="1582457255243" duration="1266000" />
+      <workItem from="1582618127272" duration="2818000" />
+      <workItem from="1582791528506" duration="277000" />
+      <workItem from="1582821906691" duration="1385000" />
+      <workItem from="1582900071740" duration="20729000" />
+      <workItem from="1583145205410" duration="15418000" />
+      <workItem from="1583164205634" duration="1179000" />
+      <workItem from="1583182982090" duration="1310000" />
+      <workItem from="1583184567314" duration="94000" />
+      <workItem from="1583228846410" duration="6276000" />
+      <workItem from="1583246132636" duration="668000" />
+      <workItem from="1583256324297" duration="494000" />
+      <workItem from="1583256913191" duration="1126000" />
+      <workItem from="1583258863046" duration="1733000" />
+      <workItem from="1583260717490" duration="638000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+</project>
