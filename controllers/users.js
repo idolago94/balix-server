@@ -75,16 +75,18 @@ const startFollow = async(req, res) => {
     // client id
   let user_id = req.query.id;
   // update array of users id following
-  let following_ids = req.body.follow;
+  let start_follow_user_id = req.body.user;
 
   //update the followers users of the user that the client start follow
-  let follow_user_id = following_ids[following_ids.length-1];
-  let follow_user = await userMiddleware.getUser(follow_user_id);
+  let follow_user = await userMiddleware.getUser(start_follow_user_id);
   let followers_ids = follow_user.followers;
   followers_ids.push(user_id);
   await userMiddleware.updateUser(follow_user_id, {followers: followers_ids});
 
   // update the following users of the client user
+  let follower_user = await userMiddleware.getUser(user_id);
+  let following_ids = follower_user.following;
+  following_ids.push(start_follow_user_id);
   let response = await userMiddleware.updateUser(user_id, {following: following_ids});
 
   // store new action
@@ -100,19 +102,19 @@ const stopFollow = async(req, res) => {
     // client id
     let user_id = req.query.id;
     // user to stop follow id
-    let user_stop_follow_id = req.body.user_stop;
-    // update array of users id following
-    let following_ids = req.body.follow;
-    console.log('my update following', following_ids);
+    let user_stop_follow_id = req.body.user;
 
     //update the followers users of the user that the client start follow
     let stop_follow_user = await userMiddleware.getUser(user_stop_follow_id);
     console.log(stop_follow_user.username);
     let followers_ids = stop_follow_user.followers;
-    followers_ids.filter(user_id => user_id != user_stop_follow_id);
+    followers_ids.filter(id => id != user_stop_follow_id);
     await userMiddleware.updateUser(user_stop_follow_id, {followers: followers_ids});
 
     // update the following users of the client user
+    let follower_user = await userMiddleware.getUser(user_id);
+    let following_ids = follower_user.following;
+    following_ids.filter(id => id != user_stop_follow_id);
     let response = await userMiddleware.updateUser(user_id, {following: following_ids});
 
     // store new action
