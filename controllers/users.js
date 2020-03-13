@@ -150,24 +150,6 @@ const updateProfileImage = async(req, res) => {
             await actionMiddleware.addAction(actionType.PROFILE_IMAGE, user_id, undefined);
             res.json(user_profile);
         }
-
-    // try {
-    //     let user_id = req.query.id;
-    //     await upload(req, res);
-    //
-    //     if (req.file == undefined) {
-    //         return res.json({error: `You must select a file.`});
-    //     }
-    //
-    //     let file_base64 = await fileMiddleware.getFileBase64(req.file);
-    //
-    //     let user_profile = await userMiddleware.updateUserProfileImage(user_id, req.file, file_base64);
-    //     await actionMiddleware.addAction(actionType.PROFILE_IMAGE, user_id, undefined, req.file.id);
-    //     res.json(user_profile);
-    // } catch (error) {
-    //     console.log(error);
-    //     return res.send(`Error when trying upload image: ${error}`);
-    // }
 }
 
 const updateKeywords = async(req, res) => {
