@@ -31,7 +31,7 @@ const authUser = async(loginData) => {
     let authUser = await usernameExist(loginData.username);
     if(authUser && authUser.password == loginData.password) {
         let userProfileImage = await contentMiddleware.getSingleContent(authUser.profileImage);
-        let user = Object.assign(authUser, {profileImage: userProfileImage, uploads: userUploads});
+        let user = Object.assign(authUser, {profileImage: userProfileImage});
         return user;
     }
     return false;
