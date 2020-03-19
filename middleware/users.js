@@ -30,7 +30,7 @@ const authUser = async(loginData) => {
 
     let authUser = await usernameExist(loginData.username);
     if(authUser && authUser.password == loginData.password) {
-        return user;
+        return authUser;
     }
     return false;
 }
