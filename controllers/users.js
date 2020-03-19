@@ -20,8 +20,6 @@ const getUsers = async(req, res) => {
   if(id_array[0] != '') {
       for(let i=0; i< id_array.length; i++) {
           let user = await userMiddleware.getUserData(id_array[i]);
-          let userProfile = await contentMiddleware.getSingleContent(user.profileImage);
-          user.profileImage = userProfile;
           following_users.push(user);
       }
   }
