@@ -72,7 +72,7 @@ const startFollow = async(req, res) => {
 
     // client id
   let user_id = req.query.id;
-  // update array of users id following
+  // user to start follow
   let start_follow_user_id = req.body.user;
 
   //update the followers users of the user that the client start follow
@@ -139,7 +139,7 @@ const buyPackage = async(req, res) => {
 const updateProfileImage = async(req, res) => {
     console.log('userController[updateProfileImage]');
     let user_id = req.query.id;
-    let file = req.body;
+    let file = req.body.image;
 
         let user_profile = await userMiddleware.updateUserProfileImage(user_id, file);
         console.log(user_profile);

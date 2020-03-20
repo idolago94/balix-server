@@ -13,8 +13,7 @@ const uploadContent = async(req, res) => {
     let fileUploaded = await contentMiddleware.saveContent(user_id, file, 'post');
     if(fileUploaded._id) {
         let user_uploads_ids = await userMiddleware.updateUserUploads(user_id, fileUploaded._id);
-        let user_uploads = await contentMiddleware.getUserContent(user_id);
-        res.json(user_uploads);
+        res.json(fileUploaded);
     } else {
         // the file NOT saved to the Content collection
     }
@@ -31,8 +30,6 @@ const updateAchievement = async(req, res) => {
 
     // id of the client
     let client_id = req.query.id;
-    // id of the image owner
-    let owner_id = req.body.owner_id;
     // id of the image
     let content_id = req.body.content_id;
     // achievements data({cash, hearts})
@@ -53,9 +50,11 @@ const updateAchievement = async(req, res) => {
     }
     console.log('client have enough achievements');
     // update client achievements
-    let client_update_cash = client.cash - achievements.cash;
-    let client_update_hearts = client.hearts - achievements.hearts;
-    let clientUpdateResponse = await userMiddleware.updateUser(client_id, {cash: client_update_cash, hearts: client_update_hearts});
+    client_fields_update = {
+        case: client.cash - achievements.cash,
+        hearts: client.hearts - achievements.hearts
+    }
+    let clientUpdateResponse = await userMiddleware.updateUser(client_id, client_fields_update);
     if(clientUpdateResponse._id){
         console.log('client updated!!');
 
@@ -63,41 +62,36 @@ const updateAchievement = async(req, res) => {
         // get the content data
         let updateContent = await contentMiddleware.getSingleContent(content_id);
         // update the content achievements + last update
-        updateContent.cash = updateContent.cash + achievements.cash;
-        updateContent.hearts = updateContent.hearts + achievements.hearts;
-        let updateContentResponse = await contentMiddleware.updateContent(content_id, {
-            cash: updateContent.cash,
-            hearts: updateContent.hearts,
+        let content_field_update = {
+            cash: updateContent.cash + achievements.cash,
+            hearts: updateContent.hearts + achievements.hearts,
             lastUpdate: new Date()
-        });
+        };
+        let updateContentResponse = await contentMiddleware.updateContent(content_id, content_field_update);
         if(updateContentResponse._id) {
             console.log('content updated!!');
             // add the achievements to the content owner
             // get the owner data
-            let owner = await userMiddleware.getUser(owner_id);
+            let owner = await userMiddleware.getUser(updateContent.user_id);
             // update the owner achievements
-            owner.cash = owner.cash + achievements.cash;
-            owner.cash_earned = (owner.cash_earned) ? (owner.cash_earned + achievements.cash):(achievements.cash);
-            owner.hearts = owner.hearts + achievements.hearts;
-            owner.hearts_earned = (owner.hearts_earned) ? (owner.hearts_earned + achievements.hearts):(achievements.hearts);
             let owner_fields_update = {
-                cash: owner.cash,
-                cash_earned: owner.cash_earned,
-                hearts: owner.hearts,
-                hearts_earned: owner.hearts_earned,
+                cash: owner.cash + achievements.cash,
+                cash_earned: (owner.cash_earned) ? (owner.cash_earned + achievements.cash):(achievements.cash),
+                hearts: owner.hearts + achievements.hearts,
+                hearts_earned: (owner.hearts_earned) ? (owner.hearts_earned + achievements.hearts):(achievements.hearts),
                 lastContentUpdate: new Date()
             };
-            let ownerUpdateResponse = await userMiddleware.updateUser(owner_id, owner_fields_update);
+            let ownerUpdateResponse = await userMiddleware.updateUser(updateContent.user_id, owner_fields_update);
             console.log(ownerUpdateResponse);
             if(ownerUpdateResponse._id) {
                 console.log('content owner updated!!');
                 if(achievements.cash > 0) {
-                    await actionMiddleware.addAction(actionType.EMOJI, client_id, owner_id, content_id, achievements.emoji);
+                    await actionMiddleware.addAction(actionType.EMOJI, client_id, updateContent.user_id, content_id, achievements.emoji);
                 }
                 if(achievements.hearts > 0) {
-                    await actionMiddleware.addAction(actionType.HEART, client_id, owner_id, content_id);
+                    await actionMiddleware.addAction(actionType.HEART, client_id, updateContent.user_id, content_id);
                 }
-                res.json({cash: client_update_cash, hearts: client_update_hearts});
+                res.json({user: client_fields_update, owner: owner_fields_update, content: content_field_update});
             } else {
                 console.log('owner NOT updated');
             }
