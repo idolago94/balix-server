@@ -73,12 +73,15 @@ const updateAchievement = async(req, res) => {
             // add the achievements to the content owner
             // get the owner data
             let owner = await userMiddleware.getUser(updateContent.user_id);
-            // update the owner achievements
+            let owner_uploads = owner.uploads;
+            owner_uploads = owner_uploads.map(up => up.content_id == content_id ? ({...up, lastUpdate: new Date()}):(up));
+            // update the owner achievements and uploads array
             let owner_fields_update = {
                 cash: owner.cash + achievements.cash,
                 cash_earned: (owner.cash_earned) ? (owner.cash_earned + achievements.cash):(achievements.cash),
                 hearts: owner.hearts + achievements.hearts,
                 hearts_earned: (owner.hearts_earned) ? (owner.hearts_earned + achievements.hearts):(achievements.hearts),
+                uploads: owner_uploads,
                 lastContentUpdate: new Date()
             };
             let ownerUpdateResponse = await userMiddleware.updateUser(updateContent.user_id, owner_fields_update);

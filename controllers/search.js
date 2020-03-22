@@ -5,7 +5,6 @@ const handleSearch = async(req, res) => {
     console.log('searchController[handleSearch]');
     let str = req.query.word;
     let results = await searchMiddleware.search(str);
-    results = await addProfile(results);
     console.log('Founded: '+results.length);
     res.json(results);
 }

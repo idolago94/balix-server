@@ -1,15 +1,14 @@
 const Content = require('../models/Content');
-const bufferConvert = require('../helpers/buffer.convert');
-const userMiddleware = require('./users');
+const bufferMiddleware = require('./buffers');
 
 const saveContent = async(user_id, file, type) => {
     console.log('contentMiddleware[saveContent]');
-    // let user_upload = await userMiddleware.getUser(user_id);
+    let savedBuffer = await bufferMiddleware.saveBuffer(file.base64);
     let newContent = new Content({
         type: type,
         user_id: user_id,
         contentType: file.contentType,
-        buffer: bufferConvert.getImageBuffer(file.base64),
+        buffer_id: savedBuffer._id,
         cash: 0,
         hearts: 0,
         uploadDate: new Date(),

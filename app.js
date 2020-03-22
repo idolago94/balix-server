@@ -15,6 +15,7 @@ const imagesRouter = require('./routes/images');
 const actionsRouter = require('./routes/actions');
 const searchRouter = require('./routes/search');
 const contentRouter = require('./routes/content');
+const bufferRouter = require('./routes/buffer');
 
 const demouploadRouter = require('./routes/demoupload');
 
@@ -43,6 +44,7 @@ app.use('/images', imagesRouter);
 app.use('/actions', actionsRouter);
 app.use('/search', searchRouter);
 app.use('/content', contentRouter);
+app.use('/buffer', bufferRouter);
 
 app.use('/demoupload', demouploadRouter);
 

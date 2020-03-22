@@ -90,17 +90,22 @@ const updateUser = async(user_id, field_to_update) => {
     return response;
 }
 
-const updateUserUploads = async(user_id, file_id, file_base64) => {
+const updateUserUploads = async(user_id, content_id, file_base64) => {
     console.log('users_middleware[updateUserUploads]');
     // update the user uploads array
     let user = await getUser(user_id);
     let user_uploads_ids = user.uploads;
-    user_uploads_ids.push(file_id);
+
+    user_uploads_ids.push({
+        content_id,
+        lastUpdate: new Date(),
+        uploadDate: new Date()
+    });
     // update the user's uploads with the updated array + lastContentUpdate
     let response = await updateUser(user_id, {uploads: user_uploads_ids, lastContentUpdate: new Date()});
     if(response._id) {
         console.log('user uploads updated!!');
-        await actionMiddleware.addAction(actionType.UPLOAD, user_id, null, file_id);
+        await actionMiddleware.addAction(actionType.UPLOAD, user_id, null, content_id);
         return user_uploads_ids;
     }
 }
