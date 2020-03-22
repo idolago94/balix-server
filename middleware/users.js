@@ -2,9 +2,8 @@
 const User = require('../models/User');
 const fileMiddleware = require('./files');
 const convert = require('./convert');
-const bufferConvert = require('../helpers/buffer.convert');
-const contentMiddleware = require('../middleware/content');
-const actionMiddleware = require('../middleware/actions');
+const bufferMiddleware = require('./buffers');
+const actionMiddleware = require('./actions');
 const actionType = require('../helpers/actions.type');
 
 const usernameExist = async(username) => {
@@ -130,7 +129,8 @@ const updateUserProfileImage = async(user_id, file, file_base64) => {
     console.log('usersMiddleware[updateUserProfileImage]');
 
     // save profile image to Content collection
-    let userProfileImage = await contentMiddleware.saveContent(user_id, file, 'profile');
+    // let userProfileImage = await contentMiddleware.saveContent(user_id, file, 'profile');
+    let userProfileImage = await bufferMiddleware.saveBuffer(file.base64);
     if(userProfileImage._id) {
         console.log('profile image saved!!');
         // update user with the profile image id
