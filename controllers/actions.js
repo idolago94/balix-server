@@ -1,7 +1,4 @@
-const userMiddleware = require('../middleware/users');
-const upload = require("../middleware/upload");
 const actionMiddleware = require('../middleware/actions');
-const actionType = require('../helpers/actions.type');
 
 const getActions = async(req, res) => {
     console.log('actionController[getActions]');

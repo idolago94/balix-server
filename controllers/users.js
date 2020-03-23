@@ -40,9 +40,7 @@ const login = async(req, res, next) => {
 
   let auth = await userMiddleware.authUser(user);
   if(!auth) {
-    let error =  new Error();
-    error.message = 'username or password wrong';
-    next(error);
+    next('username or password wrong');
   } else {
     res.json(auth);
   }
