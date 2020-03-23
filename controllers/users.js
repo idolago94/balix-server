@@ -77,7 +77,7 @@ const startFollow = async(req, res) => {
   let follow_user = await userMiddleware.getUser(start_follow_user_id);
   let followers_ids = follow_user.followers;
   followers_ids.push(user_id);
-  await userMiddleware.updateUser(follow_user_id, {followers: followers_ids});
+  await userMiddleware.updateUser(start_follow_user_id, {followers: followers_ids});
 
   // update the following users of the client user
   let follower_user = await userMiddleware.getUser(user_id);
@@ -86,7 +86,7 @@ const startFollow = async(req, res) => {
   let response = await userMiddleware.updateUser(user_id, {following: following_ids});
 
   // store new action
-  await actionMiddleware.addAction(actionType.FOLLOW, user_id, follow_user_id);
+  await actionMiddleware.addAction(actionType.FOLLOW, user_id, start_follow_user_id);
 
   res.json(response);
 }
