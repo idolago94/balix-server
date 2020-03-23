@@ -1,4 +1,4 @@
 module.exports = {
     app_name: 'Balix',
-    db_name: 'balix_db15'
+    db_name: 'balix_db16'
 }

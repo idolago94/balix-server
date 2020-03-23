@@ -104,7 +104,6 @@ const updateUserUploads = async(user_id, content_id, file_base64) => {
     let response = await updateUser(user_id, {uploads: user_uploads_ids, lastContentUpdate: new Date()});
     if(response._id) {
         console.log('user uploads updated!!');
-        await actionMiddleware.addAction(actionType.UPLOAD, user_id, null, content_id);
         return user_uploads_ids;
     }
 }

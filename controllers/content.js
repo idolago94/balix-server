@@ -13,6 +13,7 @@ const uploadContent = async(req, res) => {
     let fileUploaded = await contentMiddleware.saveContent(user_id, file, 'post');
     if(fileUploaded._id) {
         let user_uploads_ids = await userMiddleware.updateUserUploads(user_id, fileUploaded._id);
+        await actionMiddleware.addAction(actionType.UPLOAD, user_id, undefined, fileUploaded.buffer_id);
         res.json(fileUploaded);
     } else {
         // the file NOT saved to the Content collection
@@ -89,10 +90,10 @@ const updateAchievement = async(req, res) => {
             if(ownerUpdateResponse._id) {
                 console.log('content owner updated!!');
                 if(achievements.cash > 0) {
-                    await actionMiddleware.addAction(actionType.EMOJI, client_id, updateContent.user_id, content_id, achievements.emoji);
+                    await actionMiddleware.addAction(actionType.EMOJI, client_id, updateContent.user_id, updateContent.buffer_id, achievements.emoji);
                 }
                 if(achievements.hearts > 0) {
-                    await actionMiddleware.addAction(actionType.HEART, client_id, updateContent.user_id, content_id);
+                    await actionMiddleware.addAction(actionType.HEART, client_id, updateContent.user_id, updateContent.buffer_id);
                 }
                 res.json({user: client_fields_update, owner: owner_fields_update, content: content_field_update});
             } else {
