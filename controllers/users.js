@@ -87,14 +87,12 @@ const startFollow = async(req, res) => {
 
   // store new action
   await actionMiddleware.addAction(actionType.FOLLOW, user_id, start_follow_user_id);
-
-  res.json(response);
+  console.log('response: ', following_ids);
+  res.json(following_ids);
 }
 
 const stopFollow = async(req, res) => {
     console.log('usersController[stopFollow]');
-
-    console.log('stop follow');
     // client id
     let user_id = req.query.id;
     // user to stop follow id
@@ -104,19 +102,19 @@ const stopFollow = async(req, res) => {
     let stop_follow_user = await userMiddleware.getUser(user_stop_follow_id);
     console.log(stop_follow_user.username);
     let followers_ids = stop_follow_user.followers;
-    followers_ids.filter(id => id != user_stop_follow_id);
+    followers_ids = followers_ids.filter(id => id != user_id);
     await userMiddleware.updateUser(user_stop_follow_id, {followers: followers_ids});
 
     // update the following users of the client user
     let follower_user = await userMiddleware.getUser(user_id);
     let following_ids = follower_user.following;
-    following_ids.filter(id => id != user_stop_follow_id);
+    following_ids = following_ids.filter(id => id != user_stop_follow_id);
     let response = await userMiddleware.updateUser(user_id, {following: following_ids});
 
     // store new action
     await actionMiddleware.addAction(actionType.STOP_FOLLOW, user_id, user_stop_follow_id);
 
-    res.json(response);
+    res.json(following_ids);
 }
 
 const buyPackage = async(req, res) => {
