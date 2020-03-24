@@ -40,23 +40,23 @@ const login = async(req, res, next) => {
 
   let auth = await userMiddleware.authUser(user);
   if(!auth) {
-    next('username or password wrong');
+    next('Username or password wrong.');
   } else {
     res.json(auth);
   }
 }
 
-const signup = async(req, res) => {
-    console.log('usersController[signup]');
+const signup = async(req, res, next) => {
+    console.log('UsersController[signup]');
 
     let usernameExist = await userMiddleware.usernameExist(req.body.username);
     if(usernameExist) {
-        return res.json({error: 'Username exist.'});
+        next('Username allready exist.');
     }
 
     let emailExist = await userMiddleware.emailExist(req.body.email);
     if(emailExist) {
-        return res.json({error: 'Email allready in use.'});
+        next('Email allready in use.')
     }
     let user = await userMiddleware.saveUser(req.body);
 
