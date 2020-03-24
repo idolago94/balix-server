@@ -1,4 +1,5 @@
 const actionMiddleware = require('../middleware/actions');
+const actionType = require('../helpers/actions.type');
 
 const getActions = async(req, res) => {
     console.log('actionController[getActions]');
@@ -7,6 +8,11 @@ const getActions = async(req, res) => {
     res.json(response);
 }
 
+const getTypes = (req, res) => {
+    res.json(actionType);
+}
+
 module.exports = {
-    getActions: getActions
+    getActions: getActions,
+    getTypes: getTypes
 }
