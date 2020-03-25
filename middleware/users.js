@@ -145,7 +145,7 @@ const updateUserProfileImage = async(user_id, file, file_base64) => {
 const updateUserKeywords = async(user_id, keywords) => {
     console.log('users_middleware[updateUserKeywords]');
     let response = await updateUser(user_id, {keywords: keywords});
-    if(response.ok) {
+    if(response._id) {
         console.log(`user's keywords updated!!`);
         return keywords;
     }
