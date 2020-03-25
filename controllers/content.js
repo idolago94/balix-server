@@ -52,7 +52,7 @@ const updateAchievement = async(req, res) => {
     console.log('client have enough achievements');
     // update client achievements
     client_fields_update = {
-        case: client.cash - achievements.cash,
+        cash: client.cash - achievements.cash,
         hearts: client.hearts - achievements.hearts
     }
     let clientUpdateResponse = await userMiddleware.updateUser(client_id, client_fields_update);
