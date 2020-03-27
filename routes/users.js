@@ -23,4 +23,8 @@ router.post('/updateProfileImage', userController.updateProfileImage);
 
 router.put('/updateKeywords', userController.updateKeywords);
 
+router.put('/update', userController.updateUser);
+
+router.put('/addExtra', userController.addExtra);
+
 module.exports = router;

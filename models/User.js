@@ -20,7 +20,11 @@ const userSchema = new Schema({
    keywords: {type: Array, text: true}, // array of strings
    live: String || undefined,
    // story: Array || undefined // array of objects({id, contentType, uploadDate, cash, hearts, base64})
-   lastContentUpdate: Date
+   lastContentUpdate: Date,
+   limit_of_contents: { type: Number, default: 9 },
+   secrets: Array,
+   country: String || undefined,
+   date_of_birth: Date || undefined
 });
 userSchema.index({username: "text", keywords: "text"});
 const User = mongoose.model('Users', userSchema);

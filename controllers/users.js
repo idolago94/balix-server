@@ -156,6 +156,30 @@ const updateKeywords = async(req, res) => {
     res.json(keywords);
 }
 
+const updateUser = async(req, res) => {
+  let id = req.query.id;
+  let fields = req.body;
+
+  let response = await userMiddleware.updateUser(id, fields);
+  res.json(response);
+}
+
+const addExtra = async(req, res, next) => {
+  let user_id = req.query.id;
+  let cost = req.body.cost;
+  let extra_amount = req.body.amount;
+
+  let user = await userMiddleware.getUser(user_id);
+  if(user.cash < cost) {
+    next('You do not have enough money.');
+  } else {
+    let cash = user.cash - cost;
+    let limit_of_contents = (user.limit_of_contents*1) + extra_amount;
+    let updatedUser = await userMiddleware.updateUser(user_id, {cash, limit_of_contents});
+    updatedUser._id && res.json({cash, limit_of_contents});
+  }
+}
+
 module.exports = {
     getSingleUser: getSingleUser,
     signup: signup,
@@ -166,5 +190,7 @@ module.exports = {
     stopFollow: stopFollow,
     buyPackage: buyPackage,
     updateProfileImage: updateProfileImage,
-    updateKeywords: updateKeywords
+    updateKeywords: updateKeywords,
+    updateUser: updateUser,
+    addExtra: addExtra
 }
