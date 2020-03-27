@@ -4,19 +4,24 @@ const actionMiddleware = require('../middleware/actions');
 const actionType = require('../helpers/actions.type');
 const contentMiddleware = require('../middleware/content');
 
-const uploadContent = async(req, res) => {
+const uploadContent = async(req, res, next) => {
     console.log('contentController[uploadContent]');
     let user_id = req.query.id; // String
     let file = req.body.file; // {base64, contentType}
 
-    // upload file to Content collection
-    let fileUploaded = await contentMiddleware.saveContent(user_id, file, 'post');
-    if(fileUploaded._id) {
-        let user_uploads_ids = await userMiddleware.updateUserUploads(user_id, fileUploaded._id);
-        await actionMiddleware.addAction(actionType.UPLOAD, user_id, undefined, fileUploaded.buffer_id);
-        res.json(fileUploaded);
+    let user = await userMiddleware.getUser(user_id);
+    if(user.uploads.length >= user.limit_of_contents) {
+        next('You got your limit of uploads.');
     } else {
-        // the file NOT saved to the Content collection
+        // upload file to Content collection
+        let fileUploaded = await contentMiddleware.saveContent(user_id, file, 'post');
+        if(fileUploaded._id) {
+            let user_uploads_ids = await userMiddleware.updateUserUploads(user_id, fileUploaded._id);
+            await actionMiddleware.addAction(actionType.UPLOAD, user_id, undefined, fileUploaded.buffer_id);
+            res.json(fileUploaded);
+        } else {
+            // the file NOT saved to the Content collection
+        }
     }
 }
 
