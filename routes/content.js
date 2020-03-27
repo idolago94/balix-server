@@ -13,7 +13,9 @@ router.get('/userContent', contentController.getUserContent);
 
 router.get('/getContents', contentController.getSomeContents);
 
-router.post('/uploadSecret', contentController.uploadSecret);
+router.post('/uploadSecret', contentController.uploadSecret)
+
+router.put('/addSecretView', contentController.addSecretView);
 
 // router.get('/getSingleContent', imageController.getSingleImage);
 //

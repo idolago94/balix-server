@@ -12,10 +12,10 @@ const userSchema = new Schema({
    uploads: Array, // array of objects({id, contentType, uploadDate, cash, hearts, base64})
    following: Array, // array of user_id
    followers: Array, // array of user_id
-   cash: Number,
-   cash_earned: Number,
-   hearts: Number,
-   hearts_earned: Number,
+   cash: {type: Number, default: 0},
+   cash_earned: {type: Number, default: 0},
+   hearts: {type: Number, default: 0},
+   hearts_earned: {type: Number, default: 0},
    conversations: Array, // array of conversation_id
    keywords: {type: Array, text: true}, // array of strings
    live: String || undefined,

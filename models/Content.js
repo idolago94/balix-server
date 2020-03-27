@@ -10,7 +10,8 @@ const Content = mongoose.model('Content',
         hearts: Number,
         uploadDate: Date,
         lastUpdate: Date,
-        entrance: Number || undefined
+        entrance: Number || undefined,
+        views: {type: Array, default: []}
     });
 
 module.exports=Content;

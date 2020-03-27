@@ -46,6 +46,37 @@ const uploadSecret = async(req, res, next) => {
     }
 }
 
+const addSecretView = async(req, res, next) => {
+    let user_id = req.query.id;
+    let content = req.body.content;
+    let cost = req.body.content.entrance;
+
+    let user = await userMiddleware.getUser(user_id);
+    if(user.cash < cost) {
+        next('You do not have enough money to unlock this secret.');
+    } else {
+        let user_cash = user.cash*1 - cost;
+        let buyResponse = await userMiddleware.updateUser(user_id, {cash: user_cash});
+        if(buyResponse._id) {
+            let owner = await userMiddleware.getUser(content.user_id);
+            let field_to_update = {
+                cash: owner.cash*1 + cost,
+                cash_earned: owner.cash_earned*1 + cost
+            };
+            let ownerResponse = await userMiddleware.updateUser(content.user_id, field_to_update);
+            let update_views = content.views;
+            let update_cash = content.cash;
+            update_cash = update_cash*1 + cost;
+            update_views.push(user_id);
+            let contentResponse = await contentMiddleware.updateContent(content._id, {views: update_views, cash: update_cash});
+            if(contentResponse._id) {
+                res.json({views: update_views, cash: update_cash});
+            }
+        }
+        // payment not happened
+    }
+}
+
 const getAll = async(req, res) => {
     console.log('imageController[getAll]');
     let response = await contentMiddleware.getAllContents();
@@ -162,5 +193,6 @@ module.exports = {
     updateAchievement: updateAchievement,
     getUserContent: getUserContent,
     getSomeContents: getSomeContents,
-    uploadSecret: uploadSecret
+    uploadSecret: uploadSecret,
+    addSecretView: addSecretView
 }

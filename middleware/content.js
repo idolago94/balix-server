@@ -32,11 +32,7 @@ const getUserContent = async(user_id) => {
 
 const updateContent = async(content_id, achievements) => {
     console.log('contentMiddleware[updateContent]');
-    let response = await Content.findByIdAndUpdate(content_id, {
-        cash: achievements.cash,
-        hearts: achievements.hearts,
-        lastUpdate: new Date()
-    });
+    let response = await Content.findByIdAndUpdate(content_id, {...achievements, lastUpdate: new Date()});
     return response;
 }
 
