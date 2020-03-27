@@ -151,6 +151,25 @@ const updateUserKeywords = async(user_id, keywords) => {
     }
 }
 
+const updateUserSecrets = async(user_id, secret_id) => {
+    console.log('users_middleware[updateUserSecrets]');
+    // update the user uploads array
+    let user = await getUser(user_id);
+    let user_secrets_ids = user.secrets;
+
+    user_secrets_ids.push({
+        content_id: secret_id,
+        lastUpdate: new Date(),
+        uploadDate: new Date()
+    });
+    // update the user's uploads with the updated array + lastContentUpdate
+    let response = await updateUser(user_id, {secrets: user_secrets_ids});
+    if(response._id) {
+        console.log('user secrets updated!!');
+        return user_secrets_ids;
+    }
+}
+
 module.exports = {
     getUser: getUser,
     saveUser: saveUser,
@@ -164,5 +183,6 @@ module.exports = {
     usernameExist: usernameExist,
     emailExist: emailExist,
     updateUserProfileImage: updateUserProfileImage,
-    updateUserKeywords: updateUserKeywords
+    updateUserKeywords: updateUserKeywords,
+    updateUserSecrets: updateUserSecrets
 }

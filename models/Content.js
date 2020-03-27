@@ -9,7 +9,8 @@ const Content = mongoose.model('Content',
         cash: Number,
         hearts: Number,
         uploadDate: Date,
-        lastUpdate: Date
+        lastUpdate: Date,
+        entrance: Number || undefined
     });
 
 module.exports=Content;

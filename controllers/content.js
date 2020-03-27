@@ -25,6 +25,27 @@ const uploadContent = async(req, res, next) => {
     }
 }
 
+const uploadSecret = async(req, res, next) => {
+    console.log('contentController[uploadSecret]');
+    let user_id = req.query.id; // String
+    let file = req.body.file; // {base64, contentType}
+
+    let user = await userMiddleware.getUser(user_id);
+    if(user.uploads.length >= 9) {
+        next('You got your limit of upload secrets.');
+    } else {
+        // upload file to Content collection
+        let fileUploaded = await contentMiddleware.saveContent(user_id, file, 'secret');
+        if(fileUploaded._id) {
+            let user_secrets_ids = await userMiddleware.updateUserSecrets(user_id, fileUploaded._id);
+            await actionMiddleware.addAction(actionType.UPLOAD_SECRET, user_id, undefined, fileUploaded.buffer_id);
+            res.json(fileUploaded);
+        } else {
+            // the file NOT saved to the Content collection
+        }
+    }
+}
+
 const getAll = async(req, res) => {
     console.log('imageController[getAll]');
     let response = await contentMiddleware.getAllContents();
@@ -140,5 +161,6 @@ module.exports = {
     getAll: getAll,
     updateAchievement: updateAchievement,
     getUserContent: getUserContent,
-    getSomeContents: getSomeContents
+    getSomeContents: getSomeContents,
+    uploadSecret: uploadSecret
 }

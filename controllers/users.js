@@ -167,14 +167,13 @@ const updateUser = async(req, res) => {
 const addExtra = async(req, res, next) => {
   let user_id = req.query.id;
   let cost = req.body.cost;
-  let extra_amount = req.body.amount;
 
   let user = await userMiddleware.getUser(user_id);
   if(user.cash < cost) {
     next('You do not have enough money.');
   } else {
     let cash = user.cash - cost;
-    let limit_of_contents = (user.limit_of_contents*1) + extra_amount;
+    let limit_of_contents = (user.limit_of_contents*1) + 3;
     let updatedUser = await userMiddleware.updateUser(user_id, {cash, limit_of_contents});
     updatedUser._id && res.json({cash, limit_of_contents});
   }

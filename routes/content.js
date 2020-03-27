@@ -13,6 +13,8 @@ router.get('/userContent', contentController.getUserContent);
 
 router.get('/getContents', contentController.getSomeContents);
 
+router.post('/uploadSecret', contentController.uploadSecret);
+
 // router.get('/getSingleContent', imageController.getSingleImage);
 //
 // router.get('/getUserContent', imageController.getImages);

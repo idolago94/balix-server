@@ -10,5 +10,9 @@ module.exports = {
     UPLOAD_STORY: 8,
     EMOJI_STORY: 9,
     HEART_STORY: 10,
-    PROFILE_IMAGE: 11
+    PROFILE_IMAGE: 11,
+    UPLOAD_SECRET: 12,
+    SECRET_VIEW: 13,
+    SECRET_EMOJI: 14,
+    SECRET_HEART: 15
 }

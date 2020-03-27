@@ -12,7 +12,8 @@ const saveContent = async(user_id, file, type) => {
         cash: 0,
         hearts: 0,
         uploadDate: new Date(),
-        lastUpdate: new Date()
+        lastUpdate: new Date(),
+        entrance: file.entrance
     });
     let response = await newContent.save();
     return response;
