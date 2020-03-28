@@ -70,6 +70,7 @@ const addSecretView = async(req, res, next) => {
             update_views.push(user_id);
             let contentResponse = await contentMiddleware.updateContent(content._id, {views: update_views, cash: update_cash});
             if(contentResponse._id) {
+                await actionMiddleware.addAction(actionType.SECRET_VIEW, user_id, owner._id, content.buffer_id);
                 res.json({views: update_views, cash: update_cash});
             }
         }
@@ -131,7 +132,12 @@ const updateAchievement = async(req, res) => {
             // add the achievements to the content owner
             // get the owner data
             let owner = await userMiddleware.getUser(updateContent.user_id);
-            let owner_uploads = owner.uploads;
+            let owner_uploads = null;
+            if(updateContent.type == 'post') {
+                owner_uploads = owner.uploads;
+            } else if(updateContent == 'secret') {
+                owner_uploads = owner.secrets;
+            }
             owner_uploads = owner_uploads.map(up => up.content_id == content_id ? ({...up, lastUpdate: new Date()}):(up));
             // update the owner achievements and uploads array
             let owner_fields_update = {
@@ -139,7 +145,7 @@ const updateAchievement = async(req, res) => {
                 cash_earned: (owner.cash_earned) ? (owner.cash_earned + achievements.cash):(achievements.cash),
                 hearts: owner.hearts + achievements.hearts,
                 hearts_earned: (owner.hearts_earned) ? (owner.hearts_earned + achievements.hearts):(achievements.hearts),
-                uploads: owner_uploads,
+                [updateContent.type == 'post' ? (uploads):(secrets)]: owner_uploads,
                 lastContentUpdate: new Date()
             };
             let ownerUpdateResponse = await userMiddleware.updateUser(updateContent.user_id, owner_fields_update);
@@ -147,10 +153,21 @@ const updateAchievement = async(req, res) => {
             if(ownerUpdateResponse._id) {
                 console.log('content owner updated!!');
                 if(achievements.cash > 0) {
-                    await actionMiddleware.addAction(actionType.EMOJI, client_id, updateContent.user_id, updateContent.buffer_id, achievements.emoji);
+                    await actionMiddleware.addAction(
+                        updateContent.type == 'post' ? (actionType.EMOJI):(actionType.SECRET_EMOJI), 
+                        client_id, 
+                        updateContent.user_id, 
+                        updateContent.buffer_id, 
+                        achievements.emoji
+                    );
                 }
                 if(achievements.hearts > 0) {
-                    await actionMiddleware.addAction(actionType.HEART, client_id, updateContent.user_id, updateContent.buffer_id);
+                    await actionMiddleware.addAction(
+                        updateContent.type == 'post' ? (actionType.HEART):(actionType.SECRET_HEART), 
+                        client_id, 
+                        updateContent.user_id, 
+                        updateContent.buffer_id
+                    );
                 }
                 res.json({user: client_fields_update, owner: owner_fields_update, content: content_field_update});
             } else {
