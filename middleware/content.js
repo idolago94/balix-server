@@ -42,10 +42,16 @@ const getAllContents = async() => {
     return response;
 }
 
+const getTopContents = async() => {
+    let topResponse = await Content.find({type: 'post'}).sort({cash: -1, hearts: -1}).limit(1000);
+    return topResponse;
+}
+
 module.exports = {
     saveContent: saveContent,
     getSingleContent: getSingleContent,
     getUserContent: getUserContent,
     updateContent: updateContent,
-    getAllContents: getAllContents
+    getAllContents: getAllContents,
+    getTopContents: getTopContents
 }

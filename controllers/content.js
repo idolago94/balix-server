@@ -181,14 +181,14 @@ const updateAchievement = async(req, res) => {
     }
 }
 
-const getUserContent = async (req, res) => {
+const getUserContent = async(req, res) => {
     console.log('contentController[getUserContent]');
     let user_id = req.query.id;
     let userContents = await contentMiddleware.getUserContent(user_id);
     res.json(userContents);
 }
 
-const getSomeContents = async (req, res) => {
+const getSomeContents = async(req, res) => {
     console.log('contentController[getSomeContents]');
     let content_ids = req.query.ids.split(',');
     console.log(content_ids);
@@ -204,6 +204,12 @@ const getSomeContents = async (req, res) => {
     }
 }
 
+const getTop = async(req, res) => {
+    console.log('imageController[getTop]');
+    let response = await contentMiddleware.getTopContents();
+    res.json(response);
+}
+
 module.exports = {
     uploadContent: uploadContent,
     getAll: getAll,
@@ -211,5 +217,6 @@ module.exports = {
     getUserContent: getUserContent,
     getSomeContents: getSomeContents,
     uploadSecret: uploadSecret,
-    addSecretView: addSecretView
+    addSecretView: addSecretView,
+    getTop: getTop
 }
