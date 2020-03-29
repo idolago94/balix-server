@@ -145,7 +145,7 @@ const updateAchievement = async(req, res) => {
                 cash_earned: (owner.cash_earned) ? (owner.cash_earned + achievements.cash):(achievements.cash),
                 hearts: owner.hearts + achievements.hearts,
                 hearts_earned: (owner.hearts_earned) ? (owner.hearts_earned + achievements.hearts):(achievements.hearts),
-                [updateContent.type == 'post' ? (uploads):(secrets)]: owner_uploads,
+                [updateContent.type == 'post' ? ('uploads'):('secrets')]: owner_uploads,
                 lastContentUpdate: new Date()
             };
             let ownerUpdateResponse = await userMiddleware.updateUser(updateContent.user_id, owner_fields_update);
