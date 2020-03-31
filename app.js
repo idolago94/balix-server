@@ -6,6 +6,7 @@ var logger = require('morgan');
 const mongoose = require('mongoose');
 const database = require('./database');
 const engines = require("consolidate");
+const fs = require("fs");
 
 var bodyParser = require('body-parser');
 
@@ -16,6 +17,10 @@ const contentRouter = require('./routes/content');
 const bufferRouter = require('./routes/buffer');
 
 const demouploadRouter = require('./routes/demoupload');
+
+if (!fs.existsSync('./files')) {
+  fs.mkdirSync('./files');
+}
 
 var app = express();
 
