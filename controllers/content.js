@@ -1,5 +1,4 @@
 const userMiddleware = require('../middleware/users');
-const {ObjectId} = require('mongodb');
 const actionMiddleware = require('../middleware/actions');
 const actionType = require('../helpers/actions.type');
 const contentMiddleware = require('../middleware/content');
@@ -7,42 +6,20 @@ const contentMiddleware = require('../middleware/content');
 const uploadContent = async(req, res, next) => {
     console.log('contentController[uploadContent]');
     let user_id = req.query.id; // String
-    let file = req.body.file; // {base64, contentType}
-
-    let user = await userMiddleware.getUser(user_id);
-    if(user.uploads.length >= user.limit_of_contents) {
-        next('You got your limit of uploads.');
-    } else {
-        // upload file to Content collection
-        let fileUploaded = await contentMiddleware.saveContent(user_id, file, 'post');
-        if(fileUploaded._id) {
-            let user_uploads_ids = await userMiddleware.updateUserUploads(user_id, fileUploaded._id);
-            await actionMiddleware.addAction(actionType.UPLOAD, user_id, undefined, fileUploaded.buffer_id);
-            res.json(fileUploaded);
+    let secret_mode = req.query.secret;
+    let file = {...req.file, ...req.body};
+    console.log('file upload: ', req.file);
+    let fileUploaded = await contentMiddleware.saveContent(user_id, file, secret_mode ? ('secret'):('post'));
+    if(fileUploaded._id) {
+        if(secret_mode) {
+            await userMiddleware.updateUserSecrets(user_id, fileUploaded._id);
         } else {
-            // the file NOT saved to the Content collection
+            await userMiddleware.updateUserUploads(user_id, fileUploaded._id);
         }
-    }
-}
-
-const uploadSecret = async(req, res, next) => {
-    console.log('contentController[uploadSecret]');
-    let user_id = req.query.id; // String
-    let file = req.body.file; // {base64, contentType}
-
-    let user = await userMiddleware.getUser(user_id);
-    if(user.uploads.length >= 9) {
-        next('You got your limit of upload secrets.');
+        await actionMiddleware.addAction(actionType.UPLOAD, user_id, undefined, fileUploaded.path);
+        res.json(fileUploaded);
     } else {
-        // upload file to Content collection
-        let fileUploaded = await contentMiddleware.saveContent(user_id, file, 'secret');
-        if(fileUploaded._id) {
-            let user_secrets_ids = await userMiddleware.updateUserSecrets(user_id, fileUploaded._id);
-            await actionMiddleware.addAction(actionType.UPLOAD_SECRET, user_id, undefined, fileUploaded.buffer_id);
-            res.json(fileUploaded);
-        } else {
-            // the file NOT saved to the Content collection
-        }
+        // the file NOT saved to the Content collection
     }
 }
 
@@ -50,9 +27,10 @@ const addSecretView = async(req, res, next) => {
     let user_id = req.query.id;
     let content = req.body.content;
     let cost = req.body.content.entrance;
+    console.log('contentController[addSecretView]', {cost});
 
     let user = await userMiddleware.getUser(user_id);
-    if(user.cash < cost) {
+    if(user.cash*1 < cost) {
         next('You do not have enough money to unlock this secret.');
     } else {
         let user_cash = user.cash*1 - cost;
@@ -216,7 +194,6 @@ module.exports = {
     updateAchievement: updateAchievement,
     getUserContent: getUserContent,
     getSomeContents: getSomeContents,
-    uploadSecret: uploadSecret,
     addSecretView: addSecretView,
     getTop: getTop
 }

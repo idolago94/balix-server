@@ -2,8 +2,9 @@ var express = require('express');
 var router = express.Router();
 const imageController = require('../controllers/images');
 const contentController = require('../controllers/content');
+const upload = require('../middleware/upload');
 
-router.post('/upload', contentController.uploadContent);
+router.post('/upload', upload.content.single('file'), contentController.uploadContent);
 
 router.get('/getAll', contentController.getAll);
 
@@ -13,7 +14,7 @@ router.get('/userContent', contentController.getUserContent);
 
 router.get('/getContents', contentController.getSomeContents);
 
-router.post('/uploadSecret', contentController.uploadSecret)
+// router.post('/uploadSecret', contentController.uploadSecret);
 
 router.put('/addSecretView', contentController.addSecretView);
 

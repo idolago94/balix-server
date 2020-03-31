@@ -5,6 +5,7 @@ const convert = require('./convert');
 const bufferMiddleware = require('./buffers');
 const actionMiddleware = require('./actions');
 const actionType = require('../helpers/actions.type');
+const generateUrl = require('../helpers/path');
 
 const usernameExist = async(username) => {
     console.log('userMiddleware[usernameExist]');
@@ -128,18 +129,14 @@ const updateUserProfileImage = async(user_id, file, file_base64) => {
     console.log('usersMiddleware[updateUserProfileImage]');
 
     // save profile image to Content collection
-    // let userProfileImage = await contentMiddleware.saveContent(user_id, file, 'profile');
-    let userProfileImage = await bufferMiddleware.saveBuffer(file.base64);
-    if(userProfileImage._id) {
-        console.log('profile image saved!!');
-        // update user with the profile image id
-        let response = await updateUser(user_id, {profileImage: userProfileImage._id});
-        if(response._id) {
-            return userProfileImage;
-        }
+    console.log('profile image saved!!');
+    // update user with the profile image id
+    let response = await updateUser(user_id, {profileImage: generateUrl(file.path)});
+    if(response._id) {
+        return response;
+    } else {
         // profile image id NOT saved at the user profile image
     }
-    // file NOT uploaded
 }
 
 const updateUserKeywords = async(user_id, keywords) => {

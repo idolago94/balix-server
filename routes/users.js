@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const userController = require('../controllers/users');
-
+const upload = require('../middleware/upload');
 
 router.get('/getSingleUser', userController.getSingleUser);
 
@@ -19,7 +19,7 @@ router.put('/stopFollow', userController.stopFollow);
 
 router.post('/buyPackage', userController.buyPackage);
 
-router.post('/updateProfileImage', userController.updateProfileImage);
+router.post('/updateProfileImage',upload.profile.single('file') , userController.updateProfileImage);
 
 router.put('/updateKeywords', userController.updateKeywords);
 

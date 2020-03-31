@@ -9,9 +9,7 @@ const engines = require("consolidate");
 
 var bodyParser = require('body-parser');
 
-var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-const imagesRouter = require('./routes/images');
 const actionsRouter = require('./routes/actions');
 const searchRouter = require('./routes/search');
 const contentRouter = require('./routes/content');
@@ -38,9 +36,8 @@ app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
+app.use('/',  express.static(path.join(__dirname)));
 app.use('/users', usersRouter);
-app.use('/images', imagesRouter);
 app.use('/actions', actionsRouter);
 app.use('/search', searchRouter);
 app.use('/content', contentRouter);

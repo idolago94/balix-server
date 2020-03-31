@@ -1,14 +1,15 @@
 const Content = require('../models/Content');
 const bufferMiddleware = require('./buffers');
+const generateUrl = require('../helpers/path');
 
 const saveContent = async(user_id, file, type) => {
     console.log('contentMiddleware[saveContent]');
-    let savedBuffer = await bufferMiddleware.saveBuffer(file.base64);
+    // let savedBuffer = await bufferMiddleware.saveBuffer(file.base64);
     let newContent = new Content({
         type: type,
         user_id: user_id,
-        contentType: file.contentType,
-        buffer_id: savedBuffer._id,
+        contentType: file.mimetype,
+        url: generateUrl(file.path),
         cash: 0,
         hearts: 0,
         uploadDate: new Date(),

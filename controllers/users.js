@@ -1,10 +1,7 @@
 const userMiddleware = require('../middleware/users');
-const upload = require("../middleware/upload");
 const actionMiddleware = require('../middleware/actions');
 const actionType = require('../helpers/actions.type');
-const fileMiddleware = require('../middleware/files');
-const bufferConvert = require('../helpers/buffer.convert');
-const contentMiddleware = require('../middleware/content');
+const generateUrl = require('../helpers/path');
 
 const getSingleUser = async(req, res) => {
     console.log('usersController[getSingleUser]');
@@ -135,14 +132,14 @@ const buyPackage = async(req, res) => {
 const updateProfileImage = async(req, res) => {
     console.log('userController[updateProfileImage]');
     let user_id = req.query.id;
-    let file = req.body.image;
+    let file = req.file;
 
-        let user_profile = await userMiddleware.updateUserProfileImage(user_id, file);
-        console.log(user_profile);
-        if(!user_profile.err) {
+        let updatedProfile = await userMiddleware.updateUserProfileImage(user_id, file);
+        console.log(updatedProfile);
+        if(!updatedProfile.err) {
             console.log('user profile image updated!!');
-            await actionMiddleware.addAction(actionType.PROFILE_IMAGE, user_id, undefined);
-            res.json(user_profile);
+            await actionMiddleware.addAction(actionType.PROFILE_IMAGE, user_id, undefined, file.path);
+            res.json(generateUrl(file.path));
         }
 }
 
