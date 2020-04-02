@@ -1,7 +1,7 @@
 const multer = require('multer');
 const fs = require("fs");
 
-let storageContent = multer.diskStorage({
+const storageContent = multer.diskStorage({
 
   // pass function that will generate destination path
   destination: (req, file, cb) => {
@@ -20,16 +20,15 @@ let storageContent = multer.diskStorage({
     //   // file in the specific path
     //   console.log(file);
     // });
+    // cb(null, false); // to reject the file
+    // You can always pass an error if something goes wrong:
+    // cb(new Error('I don\'t have a clue!'))
 
-    cb(
-      null, 
-      path
-    );
+    cb(null, path);
   }
 })
 
-let storageProfile = multer.diskStorage({
-
+const storageProfile = multer.diskStorage({
   // pass function that will generate destination path
   destination: (req, file, cb) => {
     let path = `./files/${req.query.id}/`;

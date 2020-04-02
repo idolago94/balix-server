@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const database = require('./database');
 const engines = require("consolidate");
 const fs = require("fs");
+const generateUrl = require('./helpers/path');
 
 var bodyParser = require('body-parser');
 
@@ -41,7 +42,15 @@ app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/',  express.static(path.join(__dirname)));
+app.use('/', express.static(path.join(__dirname)));
+app.use('/emoji', express.static(path.join(__dirname, 'emojis')));
+app.use('/emoji_urls', (req, res) => {
+  let json = {};
+  fs.readdirSync('./emojis').forEach((fileName) => {
+      json[fileName.slice(0, fileName.indexOf('.')).toUpperCase().replace('-', '_')] = generateUrl(`emoji/${fileName}`);
+  });
+  res.json(json)
+})
 app.use('/users', usersRouter);
 app.use('/actions', actionsRouter);
 app.use('/search', searchRouter);
