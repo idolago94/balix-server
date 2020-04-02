@@ -47,7 +47,10 @@ app.use('/emoji', express.static(path.join(__dirname, 'emojis')));
 app.use('/emoji_urls', (req, res) => {
   let json = {};
   fs.readdirSync('./emojis').forEach((fileName) => {
-      json[fileName.slice(0, fileName.indexOf('.')).toUpperCase().replace('-', '_')] = generateUrl(`emoji/${fileName}`);
+      json[fileName.slice(0, fileName.indexOf('.')).toUpperCase().replace('-', '_')] = {
+        url: generateUrl(`emoji/${fileName}`),
+        value: Math.floor((Math.random() * 10) + 1)
+      };
   });
   res.json(json)
 })
