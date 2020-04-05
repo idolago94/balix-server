@@ -9,7 +9,7 @@ const saveContent = async(user_id, file, type) => {
         type: type,
         user_id: user_id,
         contentType: file.mimetype,
-        url: generateUrl(file.path),
+        url: generateUrl(file.mimetype, file.path),
         cash: 0,
         hearts: 0,
         uploadDate: new Date(),
