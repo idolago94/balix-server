@@ -8,21 +8,21 @@ const userSchema = new Schema({
    password: String,
    email: String,
    gender: String,
-   profileImage: Object || undefined,
-   uploads: Array, // array of objects({id, contentType, uploadDate, cash, hearts, base64})
-   following: Array, // array of user_id
-   followers: Array, // array of user_id
+   profileImage: String || undefined,
+   uploads: {type: Array, default: []}, // array of objects({id, contentType, uploadDate, cash, hearts, base64})
+   following: {type: Array, default: []}, // array of user_id
+   followers: {type: Array, default: []}, // array of user_id
    cash: {type: Number, default: 0},
    cash_earned: {type: Number, default: 0},
    hearts: {type: Number, default: 0},
    hearts_earned: {type: Number, default: 0},
-   conversations: Array, // array of conversation_id
-   keywords: {type: Array, text: true}, // array of strings
+   conversations: {type: Array, default: []}, // array of conversation_id
+   keywords: {type: Array, text: true, default: []}, // array of strings
    live: String || undefined,
    // story: Array || undefined // array of objects({id, contentType, uploadDate, cash, hearts, base64})
    lastContentUpdate: Date,
    limit_of_contents: { type: Number, default: 9 },
-   secrets: Array,
+   secrets: {type: Array, default: []},
    country: String || undefined,
    date_of_birth: Date || undefined
 });

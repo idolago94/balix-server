@@ -16,7 +16,7 @@ const uploadContent = async(req, res, next) => {
         } else {
             await userMiddleware.updateUserUploads(user_id, fileUploaded._id);
         }
-        await actionMiddleware.addAction(actionType.UPLOAD, user_id, undefined, fileUploaded.path);
+        await actionMiddleware.addAction(actionType.UPLOAD, user_id, undefined, file);
         res.json(fileUploaded);
     } else {
         // the file NOT saved to the Content collection

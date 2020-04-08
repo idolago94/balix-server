@@ -139,7 +139,7 @@ const updateProfileImage = async(req, res) => {
         if(!updatedProfile.err) {
             console.log('user profile image updated!!');
             await actionMiddleware.addAction(actionType.PROFILE_IMAGE, user_id, undefined, file.path);
-            res.json(generateUrl(file.path));
+            res.json(generateUrl(file.mimetype, file.path));
         }
 }
 
