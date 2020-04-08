@@ -138,7 +138,7 @@ const updateProfileImage = async(req, res) => {
         console.log(updatedProfile);
         if(!updatedProfile.err) {
             console.log('user profile image updated!!');
-            await actionMiddleware.addAction(actionType.PROFILE_IMAGE, user_id, undefined, file.path);
+            await actionMiddleware.addAction(actionType.PROFILE_IMAGE, user_id, undefined, file);
             res.json(generateUrl(file.mimetype, file.path));
         }
 }
