@@ -49,7 +49,7 @@ app.use('/emoji_urls', (req, res) => {
   let json = {};
   fs.readdirSync('./emojis').forEach((fileName) => {
       json[fileName.slice(0, fileName.indexOf('.')).toUpperCase().replace('-', '_')] = {
-        url: generateUrl(`emoji/${fileName}`),
+        url: generateUrl('', `emoji/${fileName}`),
         value: Math.floor((Math.random() * 10) + 1)
       };
   });
