@@ -4,7 +4,6 @@ const generateUrl = require('../helpers/path');
 
 const saveContent = async(user_id, file, type) => {
     console.log('contentMiddleware[saveContent]');
-    // let savedBuffer = await bufferMiddleware.saveBuffer(file.base64);
     let newContent = new Content({
         type: type,
         user_id: user_id,
@@ -14,7 +13,8 @@ const saveContent = async(user_id, file, type) => {
         hearts: 0,
         uploadDate: new Date(),
         lastUpdate: new Date(),
-        entrance: file.entrance
+        entrance: type == 'secret' ? (file.entrance):(0),
+        title: file.title
     });
     let response = await newContent.save();
     return response;

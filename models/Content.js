@@ -11,7 +11,8 @@ const Content = mongoose.model('Content',
         uploadDate: Date,
         lastUpdate: Date,
         entrance: Number || undefined,
-        views: {type: Array, default: []}
+        views: {type: Array, default: []},
+        title: {type: String, default: ''}
     });
 
 module.exports=Content;
