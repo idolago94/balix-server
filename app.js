@@ -8,6 +8,7 @@ const database = require('./database');
 const engines = require("consolidate");
 const fs = require("fs");
 const generateUrl = require('./helpers/path');
+const tokenMiddleware = require('./middleware/token');
 
 var bodyParser = require('body-parser');
 
@@ -15,7 +16,6 @@ var usersRouter = require('./routes/users');
 const actionsRouter = require('./routes/actions');
 const searchRouter = require('./routes/search');
 const contentRouter = require('./routes/content');
-const bufferRouter = require('./routes/buffer');
 const videoRouter = require('./routes/video');
 const commentsRouter = require('./routes/comments');
 
@@ -59,11 +59,10 @@ app.use('/emoji_urls', (req, res) => {
 });
 app.use('/video', videoRouter);
 app.use('/users', usersRouter);
-app.use('/actions', actionsRouter);
-app.use('/search', searchRouter);
-app.use('/content', contentRouter);
-app.use('/buffer', bufferRouter);
-app.use('/comment', commentsRouter);
+app.use('/actions', tokenMiddleware.verify, actionsRouter);
+app.use('/search', tokenMiddleware.verify, searchRouter);
+app.use('/content', tokenMiddleware.verify, contentRouter);
+app.use('/comment', tokenMiddleware.verify, commentsRouter);
 
 app.use('/demoupload', demouploadRouter);
 

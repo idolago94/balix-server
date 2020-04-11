@@ -12,16 +12,21 @@ const generate = (payload) => {
 
 const verify = (req, res, next) => {
     let token = req.headers['authorization'];
-    if (token.startsWith('Bearer ')) {
-      // Remove Bearer from string
-      token = token.slice(7, token.length);
-    }
-    jwt.verify(token, secret, (err, decode) => {
-        if(!err) {
-            next();
+    if(!token) {
+        res.json({error: 'Authentication error.'});
+    } else {
+        if (token.startsWith('Bearer ')) {
+          // Remove Bearer from string
+          token = token.slice(7, token.length);
         }
-    });
-    res.json({error: 'Authentication error.'});
+        jwt.verify(token, secret, (err, decode) => {
+            if(!err) {
+                next();
+            } else {
+                res.json({error: 'Authentication error.'});
+            }
+        });
+    }
 }
 
 module.exports = {generate, verify};
