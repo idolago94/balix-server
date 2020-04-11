@@ -2,10 +2,8 @@
 const User = require('../models/User');
 const fileMiddleware = require('./files');
 const convert = require('./convert');
-const bufferMiddleware = require('./buffers');
-const actionMiddleware = require('./actions');
-const actionType = require('../helpers/actions.type');
 const generateUrl = require('../helpers/path');
+const bcryptMiddleware = require('./bcrypt');
 
 const usernameExist = async(username) => {
     console.log('userMiddleware[usernameExist]');
@@ -29,7 +27,7 @@ const authUser = async(loginData) => {
     console.log('userMiddleware[authUser]');
 
     let authUser = await usernameExist(loginData.username);
-    if(authUser && authUser.password == loginData.password) {
+    if(authUser && bcryptMiddleware.checkPassword(loginData.password, authUser.password)) {
         return authUser;
     }
     return false;
@@ -61,11 +59,12 @@ const getProfileImage = async(imageData) => {
 
 const saveUser = async(userData, profileFile, file_base64) => {
     console.log('users_middleware[saveUser]');
+    let hashPassword = bcryptMiddleware.hash(userData.password);
     let newUser = new User({
         first_name: userData.first_name,
         last_name: userData.last_name,
         username: userData.username,
-        password: userData.password,
+        password: hashPassword,
         email: userData.email,
         gender: userData.gender,
         profileImage: undefined,
@@ -78,7 +77,6 @@ const saveUser = async(userData, profileFile, file_base64) => {
         keywords: [],
         live: undefined,
         lastContentUpdate: new Date()
-        // story: undefined
     });
     let response = await newUser.save();
     return response;

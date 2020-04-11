@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-   first_name: String,
-   last_name: String,
-   username: {type: String, text: true},
-   password: String,
-   email: String,
+   first_name: {type: String, required: true},
+   last_name: {type: String, required: true},
+   username: {type: String, text: true, required: true},
+   password: {type: String, required: true},
+   email: {type: String, required: true},
    gender: String,
    profileImage: String || undefined,
    uploads: {type: Array, default: []}, // array of objects({id, contentType, uploadDate, cash, hearts, base64})
