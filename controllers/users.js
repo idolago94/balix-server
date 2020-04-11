@@ -2,6 +2,7 @@ const userMiddleware = require('../middleware/users');
 const actionMiddleware = require('../middleware/actions');
 const actionType = require('../helpers/actions.type');
 const generateUrl = require('../helpers/path');
+const tokenMiddleware = require('../middleware/token');
 
 const getSingleUser = async(req, res) => {
     console.log('usersController[getSingleUser]');
@@ -31,15 +32,15 @@ const getAllUsers = async(req, res) => {
 }
 
 const login = async(req, res, next) => {
-    console.log('usersController[login]');
-    let user = req.body;
-    console.log('body request', user);
-
+  console.log('usersController[login]');
+  let user = req.body;
+  console.log('body request', user);
   let auth = await userMiddleware.authUser(user);
   if(!auth) {
     next('Username or password wrong.');
   } else {
-    res.json(auth);
+    let token = await tokenMiddleware.generate({user_id: auth._id});
+    res.json({user: auth, token});
   }
 }
 
@@ -59,7 +60,9 @@ const signup = async(req, res, next) => {
 
     await actionMiddleware.addAction(actionType.SIGNUP, user._id);
 
-    res.json(user);
+    let token = await tokenMiddleware.generate({user_id: user._id});
+
+    res.json({user, token});
 }
 
 const startFollow = async(req, res) => {

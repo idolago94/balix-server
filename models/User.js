@@ -29,23 +29,4 @@ const userSchema = new Schema({
 userSchema.index({username: "text", keywords: "text"});
 const User = mongoose.model('Users', userSchema);
 
-// const User = mongoose.model('Users',
-//  {
-//    username: String,
-//    password: String,
-//    email: String,
-//    gender: String,
-//    profileImage: Object,
-//    uploads: Array, // array of objects({id, contentType, uploadDate, cash, hearts})
-//    following: Array, // array of user_id
-//    followers: Array, // array of user_id
-//    cash: Number,
-//    hearts: Number,
-//    conversations: Array, // array of conversation_id
-//    keywords: Array, // array of strings
-//   //  actions: Array, // array of objects({type, user, emoji?})
-//    live: String || undefined,
-//    story: Array || undefined // array of file_id
-//  });
-
  module.exports=User;
