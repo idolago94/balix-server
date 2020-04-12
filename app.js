@@ -59,7 +59,7 @@ app.use('/emoji_urls', (req, res) => {
 });
 app.use('/video', videoRouter);
 app.use('/users', usersRouter);
-app.use('/actions', tokenMiddleware.verify, actionsRouter);
+app.use('/actions', actionsRouter);
 app.use('/search', tokenMiddleware.verify, searchRouter);
 app.use('/content', tokenMiddleware.verify, contentRouter);
 app.use('/comment', tokenMiddleware.verify, commentsRouter);
