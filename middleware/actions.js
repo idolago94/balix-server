@@ -1,5 +1,5 @@
 const Action = require('../models/Action');
-const generateUrl = require('../helpers/path')
+const URL = require('../helpers/path')
 
 const addAction = async(type, active_user, disactive_user, image, emoji) => {
     console.log('actionsMiddleware[addAction]');
@@ -7,7 +7,7 @@ const addAction = async(type, active_user, disactive_user, image, emoji) => {
         type: type,
         active_user_id: active_user,
         disactive_user_id: disactive_user || undefined,
-        image_url: image ? (generateUrl(image.mimetype, image.path)):(undefined),
+        image_url: image ? (URL.generateUrl(image.mimetype, image.path)):(undefined),
         emoji: emoji,
         date: new Date()
     });

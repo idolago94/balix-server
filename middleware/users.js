@@ -2,7 +2,7 @@
 const User = require('../models/User');
 const fileMiddleware = require('./files');
 const convert = require('./convert');
-const generateUrl = require('../helpers/path');
+const URL = require('../helpers/path');
 const bcryptMiddleware = require('./bcrypt');
 
 const usernameExist = async(username) => {
@@ -129,7 +129,7 @@ const updateUserProfileImage = async(user_id, file, file_base64) => {
     // save profile image to Content collection
     console.log('profile image saved!!');
     // update user with the profile image id
-    let response = await updateUser(user_id, {profileImage: generateUrl(file.mimetype, file.path)});
+    let response = await updateUser(user_id, {profileImage: URL.generateUrl(file.mimetype, file.path)});
     if(response._id) {
         return response;
     } else {

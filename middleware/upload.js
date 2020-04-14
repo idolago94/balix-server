@@ -1,6 +1,7 @@
 const multer = require('multer');
 const fs = require("fs");
 const userMiddleware = require('./users');
+const URL = require('../helpers/path');
 
 const storageContent = multer.diskStorage({
   // pass function that will generate destination path
@@ -28,7 +29,7 @@ const storageContent = multer.diskStorage({
 
     cb(null, path);
   }
-})
+});
 
 const storageProfile = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -47,9 +48,16 @@ const storageProfile = multer.diskStorage({
       path
     );
   }
-})
+});
+
+const deleteFromStorage = (url) => {
+  let path = URL.getPath(url);
+  fs.unlinkSync(path);
+  return true;
+}
 
 module.exports = {
   content: multer({storage: storageContent}),
-  profile: multer({storage: storageProfile})
+  profile: multer({storage: storageProfile}),
+  deleteFromStorage: deleteFromStorage
 }

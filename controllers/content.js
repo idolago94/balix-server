@@ -2,6 +2,7 @@ const userMiddleware = require('../middleware/users');
 const actionMiddleware = require('../middleware/actions');
 const actionType = require('../helpers/actions.type');
 const contentMiddleware = require('../middleware/content');
+const uploadMiddleware = require('../middleware/upload');
 
 const uploadContent = async(req, res, next) => {
     console.log('contentController[uploadContent]');
@@ -188,6 +189,27 @@ const getTop = async(req, res) => {
     res.json(response);
 }
 
+const deleteContent = async(req, res) => {
+    let user_id = req.query.id;
+    let secret = req.query.secret;
+    let delete_ids = req.body;
+
+    let user = await userMiddleware.getUser(user_id);
+    let updateArr = user[secret ? ('secrets'):('uploads')];
+    updateArr = updateArr.filter(c => !delete_ids.includes(c.content_id.toString()));
+    let updateResponse = await userMiddleware.updateUser(user_id, {[secret ? ('secrets'):('uploads')]: updateArr});
+
+    if(updateResponse._id) {
+        delete_ids.map(async(id) => {
+            let content = await contentMiddleware.getSingleContent(id);
+            uploadMiddleware.deleteFromStorage(content.url);
+            await contentMiddleware.deleteById(content._id);
+            res.json(updateArr);
+        })
+    }
+}
+
+
 module.exports = {
     uploadContent: uploadContent,
     getAll: getAll,
@@ -195,5 +217,6 @@ module.exports = {
     getUserContent: getUserContent,
     getSomeContents: getSomeContents,
     addSecretView: addSecretView,
-    getTop: getTop
+    getTop: getTop,
+    deleteContent: deleteContent
 }

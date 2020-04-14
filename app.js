@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 const database = require('./database');
 const engines = require("consolidate");
 const fs = require("fs");
-const generateUrl = require('./helpers/path');
+const URL = require('./helpers/path');
 const tokenMiddleware = require('./middleware/token');
 
 var bodyParser = require('body-parser');
@@ -51,7 +51,7 @@ app.use('/emoji_urls', (req, res) => {
   let json = {};
   fs.readdirSync('./emojis').forEach((fileName) => {
       json[fileName.slice(0, fileName.indexOf('.')).toUpperCase().replace('-', '_')] = {
-        url: generateUrl('', `emoji/${fileName}`),
+        url: URL.generateUrl('', `emoji/${fileName}`),
         value: Math.floor((Math.random() * 10) + 1)
       };
   });

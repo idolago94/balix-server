@@ -1,7 +1,7 @@
 const userMiddleware = require('../middleware/users');
 const actionMiddleware = require('../middleware/actions');
 const actionType = require('../helpers/actions.type');
-const generateUrl = require('../helpers/path');
+const URL = require('../helpers/path');
 const tokenMiddleware = require('../middleware/token');
 
 const getSingleUser = async(req, res) => {
@@ -142,7 +142,7 @@ const updateProfileImage = async(req, res) => {
         if(!updatedProfile.err) {
             console.log('user profile image updated!!');
             await actionMiddleware.addAction(actionType.PROFILE_IMAGE, user_id, undefined, file);
-            res.json(generateUrl(file.mimetype, file.path));
+            res.json(URL.generateUrl(file.mimetype, file.path));
         }
 }
 

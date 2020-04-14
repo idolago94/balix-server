@@ -1,5 +1,4 @@
 const Comment = require('../models/Comment');
-const generateUrl = require('../helpers/path')
 
 const addComment = async(sender_id, content_id, data) => {
     console.log('CommentsMiddleware[addComment]');

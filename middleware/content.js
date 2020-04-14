@@ -1,6 +1,5 @@
 const Content = require('../models/Content');
-const bufferMiddleware = require('./buffers');
-const generateUrl = require('../helpers/path');
+const URL = require('../helpers/path');
 
 const saveContent = async(user_id, file, type) => {
     console.log('contentMiddleware[saveContent]');
@@ -8,7 +7,7 @@ const saveContent = async(user_id, file, type) => {
         type: type,
         user_id: user_id,
         contentType: file.mimetype,
-        url: generateUrl(file.mimetype, file.path),
+        url: URL.generateUrl(file.mimetype, file.path),
         cash: 0,
         hearts: 0,
         uploadDate: new Date(),
@@ -48,11 +47,17 @@ const getTopContents = async() => {
     return topResponse;
 }
 
+const deleteById = async(id) => {
+    console.log('contentMiddleware[deleteById]');
+    return Content.findByIdAndDelete(id);
+}
+
 module.exports = {
     saveContent: saveContent,
     getSingleContent: getSingleContent,
     getUserContent: getUserContent,
     updateContent: updateContent,
     getAllContents: getAllContents,
-    getTopContents: getTopContents
+    getTopContents: getTopContents,
+    deleteById: deleteById
 }
