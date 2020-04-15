@@ -95,7 +95,7 @@ const compress = async(req, res, next) => {
   const bitrate = whatBitrate(inputMetadata.format.size);
   const limit_size = 1000*1000; // 1MB
   console.log('inputMetadata', inputMetadata);
-  if(inputMetadata.format.size > limit_size || inputMetadata.format.format_name.includes('jpeg') || inputMetadata.format.format_name.includes('jpg') || inputMetadata.format_long_name.includes('png')) {
+  if(inputMetadata.format.size > limit_size) {
     ffmpeg(path.join(__dirname, '..', file.path))
       .outputOptions(['-c:v libx264', `-b:v ${bitrate}k`, '-c:a aac', '-b:a 58k'])
       .on("start", commandLine => {
