@@ -88,7 +88,7 @@ const containerVideo = multer.diskStorage({
 
 const storageVideo = (req, res, next) => {
   let videoFile = req.file;
-  let outputPath = `files/${req.query.id}/${req.query.secret ? ('secrets/'):('uploads/')}/${videoFile.filename}`;
+  let outputPath = `files/${req.query.id}/${req.query.secret ? ('secrets/'):('uploads/')}${videoFile.filename}`;
   // videoFile - return from multer (fieldname, originalname, encoding, mimetype, destination, filename, path, size)
   ffmpeg(videoFile.path)
     .inputOptions(['-vcodec h264', '-acodec aac'])
