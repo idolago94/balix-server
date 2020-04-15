@@ -8,7 +8,7 @@ const uploadContent = async(req, res, next) => {
     console.log('contentController[uploadContent]');
     let user_id = req.query.id; // String
     let secret_mode = req.query.secret;
-    let file = {...req.file, ...req.body};
+    let file = {...req.file, ...req.body, path: req.filePath};
     console.log('file upload: ', req.file);
     let fileUploaded = await contentMiddleware.saveContent(user_id, file, secret_mode ? ('secret'):('post'));
     if(fileUploaded._id) {

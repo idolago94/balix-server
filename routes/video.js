@@ -38,8 +38,8 @@ router.get('/', function(req, res) {
     }
 });
 
-router.post('/upload', upload.containerVideo.single('file'), upload.storageVideo, (req, res) => {
-    console.log(req.file);
-});
+// router.post('/upload', upload.content.single('file'), upload.storageVideo, (req, res) => {
+//     console.log('filePath', req.filePath);
+// });
 
 module.exports = router;
