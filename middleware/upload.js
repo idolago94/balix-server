@@ -104,7 +104,7 @@ const storageVideo = (req, res, next) => {
       console.log(stdout, stderr);
       next();
     })
-    .output(outputPath);
+    .output(outputPath).run();
 }
 
 module.exports = {
