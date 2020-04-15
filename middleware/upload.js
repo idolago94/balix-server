@@ -90,7 +90,7 @@ const storageVideo = (req, res, next) => {
   let videoFile = req.file;
   // videoFile - return from multer (fieldname, originalname, encoding, mimetype, destination, filename, path, size)
   let outputPath = `${__dirname}/../files/${req.query.id}/${req.query.secret ? ('secrets/'):('uploads/')}${videoFile.filename}`;
-  ffmpeg(`${__dirname}../${videoFile.path}`)
+  ffmpeg(`${__dirname}/../${videoFile.path}`)
     .inputOptions(['-vcodec h264', '-acodec aac'])
     .on("start", commandLine => {
       console.log(`Spawned FFmpeg with command: ${commandLine}`);
