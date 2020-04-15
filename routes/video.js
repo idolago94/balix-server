@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const fs = require('fs');
+const upload = require('../middleware/upload');
 
 router.get('/', function(req, res) {
   const path = req.query.p;
@@ -35,6 +36,10 @@ router.get('/', function(req, res) {
     res.writeHead(200, head)
     fs.createReadStream(path).pipe(res)
     }
-  })
+});
+
+router.post('/upload', upload.containerVideo.single('file'), upload.storageVideo, (req, res) => {
+    console.log(req.file);
+});
 
 module.exports = router;

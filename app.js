@@ -44,7 +44,6 @@ app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
 app.use('/', express.static(path.join(__dirname)));
 app.use('/emoji', express.static(path.join(__dirname, 'emojis')));
 app.use('/emoji_urls', (req, res) => {
