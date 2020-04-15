@@ -91,7 +91,7 @@ const storageVideo = (req, res, next) => {
   let videoFile = req.file;
   // videoFile - return from multer (fieldname, originalname, encoding, mimetype, destination, filename, path, size)
   // let outputPath = `${__dirname}/../files/${req.query.id}/${req.query.secret ? ('secrets/'):('uploads/')}${videoFile.filename}`;
-  let outputPath = path.join(__dirname, '../files', req.query.id, req.query.secret ? ('secrets/'):('uploads/'), videoFile.filename);
+  let outputPath = path.join(__dirname, '../files', req.query.id, req.query.secret ? ('secrets/'):('uploads/'));
   // ffmpeg(`${__dirname}/../${videoFile.path}`)
   ffmpeg(path.join(__dirname, '..', videoFile.path))
     .inputOptions(['-vcodec h264', '-acodec aac'])
