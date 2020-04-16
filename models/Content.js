@@ -4,7 +4,7 @@ const Content = mongoose.model('Content',
     {
         type: String, // 'post' / 'profile'
         user_id: String,
-        contentType: String,
+        mimetype: String,
         url: String,
         cash: Number,
         hearts: Number,

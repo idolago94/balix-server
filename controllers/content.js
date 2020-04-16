@@ -49,7 +49,7 @@ const addSecretView = async(req, res, next) => {
             update_views.push(user_id);
             let contentResponse = await contentMiddleware.updateContent(content._id, {views: update_views, cash: update_cash});
             if(contentResponse._id) {
-                await actionMiddleware.addAction(actionType.SECRET_VIEW, user_id, owner._id, content.buffer_id);
+                await actionMiddleware.addAction(actionType.SECRET_VIEW, user_id, owner._id, content);
                 res.json({views: update_views, cash: update_cash});
             }
         }
@@ -136,7 +136,7 @@ const updateAchievement = async(req, res) => {
                         updateContent.type == 'post' ? (actionType.EMOJI):(actionType.SECRET_EMOJI), 
                         client_id, 
                         updateContent.user_id, 
-                        updateContent.buffer_id, 
+                        updateContent, 
                         achievements.emoji
                     );
                 }
@@ -145,7 +145,7 @@ const updateAchievement = async(req, res) => {
                         updateContent.type == 'post' ? (actionType.HEART):(actionType.SECRET_HEART), 
                         client_id, 
                         updateContent.user_id, 
-                        updateContent.buffer_id
+                        updateContent
                     );
                 }
                 res.json({user: client_fields_update, owner: owner_fields_update, content: content_field_update});

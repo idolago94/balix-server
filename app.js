@@ -12,7 +12,7 @@ const tokenMiddleware = require('./middleware/token');
 
 var bodyParser = require('body-parser');
 
-var usersRouter = require('./routes/users');
+const usersRouter = require('./routes/users');
 const actionsRouter = require('./routes/actions');
 const searchRouter = require('./routes/search');
 const contentRouter = require('./routes/content');

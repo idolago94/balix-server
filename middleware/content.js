@@ -6,7 +6,7 @@ const saveContent = async(user_id, file, type) => {
     let newContent = new Content({
         type: type,
         user_id: user_id,
-        contentType: file.mimetype,
+        mimetype: file.mimetype,
         url: URL.generateUrl(file.mimetype, file.path),
         cash: 0,
         hearts: 0,
