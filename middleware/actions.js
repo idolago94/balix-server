@@ -7,7 +7,7 @@ const addAction = async(type, active_user, disactive_user, image, emoji) => {
         type: type,
         active_user_id: active_user,
         disactive_user_id: disactive_user || undefined,
-        image_url: image ? (URL.generateUrl(image.mimetype, image.path)):(undefined),
+        image_url: image ? image.url ? (image.url):(URL.generateUrl(image.mimetype, image.path)):(undefined),
         emoji: emoji,
         date: new Date()
     });
