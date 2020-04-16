@@ -102,7 +102,7 @@ const compress = async(req, res, next) => {
         console.log(`Spawned FFmpeg with command: ${commandLine}`);
       })
       .on("error", (err, stdout, stderr) => {
-        console.log(err, stdout, stderr);
+        console.log('convert error', err, stdout, stderr);
         fs.unlinkSync(file.path);
         res.json({error: 'Convert Failed'});
       })
