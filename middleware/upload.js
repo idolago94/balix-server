@@ -97,7 +97,7 @@ const compress = async(req, res, next) => {
     let outputPath = `files/${req.query.id}/${req.query.id, req.query.secret ? ('secrets/'):('uploads/')}/${new Date().getTime()}_${file.originalname}`;
     let bitrate = whatBitrate(inputMetadata.format.size);
     ffmpeg(path.join(__dirname, '..', file.path))
-      .outputOptions(['-c:v libx264', `-b:v ${bitrate}k`, '-c:a aac', '-b:a 58k'])
+      .outputOptions(['-c:v libx264', `-b:v ${bitrate}k`, '-c:a aac', '-b:a 58k', '-strict -2'])
       .on("start", commandLine => {
         console.log(`Spawned FFmpeg with command: ${commandLine}`);
       })
@@ -109,6 +109,7 @@ const compress = async(req, res, next) => {
       .on("end", (stdout, stderr) => {
         console.log('end', stdout, stderr);
         fs.unlinkSync(file.path);
+        fs.unlinkSync(outputPath);
         req.filePath = outputPath;
         next();
       })
