@@ -90,12 +90,12 @@ const deleteFromStorage = (url) => {
 const compress = async(req, res, next) => {
   let file = req.file;
   // file - return from multer (fieldname, originalname, encoding, mimetype, destination, filename, path, size)
-  let outputPath = `files/${req.query.id}/${req.query.id, req.query.secret ? ('secrets/'):('uploads/')}/${file.originalname}`;
   const inputMetadata = await metadata(path.join(__dirname, '..', file.path));
-  const bitrate = whatBitrate(inputMetadata.format.size);
   const limit_size = 1000*1000; // 1MB
   console.log('inputMetadata', inputMetadata);
   if(inputMetadata.format.size > limit_size) {
+    let outputPath = `files/${req.query.id}/${req.query.id, req.query.secret ? ('secrets/'):('uploads/')}/${file.originalname}_${new Date().getTime()}`;
+    let bitrate = whatBitrate(inputMetadata.format.size);
     ffmpeg(path.join(__dirname, '..', file.path))
       .outputOptions(['-c:v libx264', `-b:v ${bitrate}k`, '-c:a aac', '-b:a 58k'])
       .on("start", commandLine => {
@@ -122,7 +122,6 @@ const compress = async(req, res, next) => {
 module.exports = {
   content: multer({storage: storageContent, limits: {fieldSize: 4*1000*1000}}),
   profile: multer({storage: storageProfile}),
-  // containerVideo: multer({storage: containerVideo, limits: {fieldSize: 2*1000*1000}}),
   deleteFromStorage,
   compress
 }
