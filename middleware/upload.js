@@ -94,7 +94,7 @@ const compress = async(req, res, next) => {
   const limit_size = 1000*1000; // 1MB
   console.log('inputMetadata', inputMetadata);
   if(inputMetadata.format.size > limit_size) {
-    let outputPath = `files/${req.query.id}/${req.query.id, req.query.secret ? ('secrets/'):('uploads/')}/${file.originalname}_${new Date().getTime()}`;
+    let outputPath = `files/${req.query.id}/${req.query.id, req.query.secret ? ('secrets/'):('uploads/')}/${new Date().getTime()}_${file.originalname}`;
     let bitrate = whatBitrate(inputMetadata.format.size);
     ffmpeg(path.join(__dirname, '..', file.path))
       .outputOptions(['-c:v libx264', `-b:v ${bitrate}k`, '-c:a aac', '-b:a 58k'])
