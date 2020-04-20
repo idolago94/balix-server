@@ -12,6 +12,7 @@ const generate = (payload) => {
 
 const verify = (req, res, next) => {
     let token = req.headers['authorization'];
+    let user_id = req.headers.user;
     if(!token) {
         res.json({error: 'Authentication error.'});
     } else {
@@ -20,7 +21,7 @@ const verify = (req, res, next) => {
           token = token.slice(7, token.length);
         }
         jwt.verify(token, secret, (err, decode) => {
-            if(!err) {
+            if(!err && user_id == decode.user_id) {
                 next();
             } else if(err.name == 'TokenExpiredError') {
                 res.json({error: 'TokenExpiredError'});
