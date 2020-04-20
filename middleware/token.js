@@ -22,6 +22,8 @@ const verify = (req, res, next) => {
         jwt.verify(token, secret, (err, decode) => {
             if(!err) {
                 next();
+            } else if(err.name == 'TokenExpiredError') {
+                res.json({error: 'TokenExpiredError'});
             } else {
                 res.json({error: 'Authentication error.'});
             }
@@ -29,4 +31,24 @@ const verify = (req, res, next) => {
     }
 }
 
-module.exports = {generate, verify};
+const refresh = (req, res, next) => {
+    console.log('tokenModdleware[refresh]');
+    let user_id = req.query.id;
+    let token = req.headers['authorization'];
+    token = token.slice(7, token.length);
+    jwt.verify(token, secret, async(err, decode) => {
+        console.log('jwt verify -> ', err, decode);
+        if(!err) {
+            res.json(token);
+        } else {
+            if(err.name == 'TokenExpiredError') {
+                let refreshToken = await generate({user_id});
+                res.json(refreshToken);
+            } else {
+                res.json({error: 'Authentication error.'});
+            }
+        }
+    });
+}
+
+module.exports = {generate, verify, refresh};

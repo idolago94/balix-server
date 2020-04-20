@@ -62,6 +62,7 @@ app.use('/actions', actionsRouter);
 app.use('/search', tokenMiddleware.verify, searchRouter);
 app.use('/content', tokenMiddleware.verify, contentRouter);
 app.use('/comment', tokenMiddleware.verify, commentsRouter);
+app.use('/refreshToken', tokenMiddleware.refresh);
 
 app.use('/demoupload', demouploadRouter);
 
