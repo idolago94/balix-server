@@ -20,13 +20,10 @@ const storageContent = multer.diskStorage({
       fs.mkdirSync(path);
     }
 
-    let limit = 9;
-    if(!req.query.secret) {
-      let user = await userMiddleware.getUser(req.query.id);
-      limit = user.limit_of_contents;
-    }
+    let user = await userMiddleware.getUser(req.query.id);
+    let limit = req.query.secret ? (9):(user.limit_of_contents);
 
-    if(fs.readdirSync(path).length >= limit) {
+    if(user[req.query.secret ? ('secrets'):('uploads')].length >= limit) {
       cb('You got your limit of uploads.');
     }
 
@@ -58,34 +55,6 @@ const deleteFromStorage = (url) => {
   fs.unlinkSync(path);
   return true;
 };
-
-// const containerVideo = multer.diskStorage({
-//   // pass function that will generate destination path
-//   destination: async(req, file, cb) => {
-//     let path = `./files/${req.query.id}/`;
-
-//     if (!fs.existsSync(path)) {
-//       fs.mkdirSync(path);
-//     }
-
-//     path = path + (req.query.secret ? ('secrets/'):('uploads/'));
-//     if (!fs.existsSync(path)) {
-//       fs.mkdirSync(path);
-//     }
-
-//     let limit = 9;
-//     // if(!req.query.secret) {
-//     //   let user = await userMiddleware.getUser(req.query.id);
-//     //   limit = user.limit_of_contents;
-//     // }
-
-//     if(fs.readdirSync(path).length >= limit) {
-//       cb('You got your limit of uploads.');
-//     }
-
-//     cb(null, './container/');
-//   }
-// });
 
 const compress = async(req, res, next) => {
   let file = req.file;
