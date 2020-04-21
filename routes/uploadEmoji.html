@@ -79,8 +79,10 @@
 </body>
 
 <script>
+    const server_url = 'http://34.69.232.216:8080';
+
     function getAnimationsList() {
-        fetch('http://localhost:8080/animation/all')
+        fetch(server_url + '/animation/all')
         .then(res => res.json()).then(result => {
             result.map(anim => {
                 let div = document.createElement('div');
@@ -99,7 +101,7 @@
     }
 
     function getEmojisList() {
-        fetch('http://localhost:8080/emoji/all')
+        fetch(server_url + '/emoji/all')
         .then(res => res.json()).then(result => {
             result.map(emoji => {
                 let div = document.createElement('div');
@@ -160,7 +162,7 @@
                 value: $('#value-input').val(),
                 animations: animations_array
             };
-            fetch('http://localhost:8080/emoji/update?id=' + emojiData._id, {
+            fetch(server_url + '/emoji/update?id=' + emojiData._id, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
