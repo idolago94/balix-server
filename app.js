@@ -60,7 +60,7 @@ app.use('/comment', tokenMiddleware.verify, commentsRouter);
 app.use('/refreshToken', tokenMiddleware.refresh);
 
 app.use('/demoupload', express.static(path.join(__dirname, 'routes', 'demoupload.html')));
-app.use('/uploademoji', express.static(path.join(__dirname, 'routes', 'uploademoji.html')));
+app.use('/uploademoji', express.static(path.join(__dirname, 'routes', 'uploadEmoji.html')));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
