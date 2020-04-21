@@ -3,6 +3,7 @@ const actionMiddleware = require('../middleware/actions');
 const actionType = require('../helpers/actions.type');
 const contentMiddleware = require('../middleware/content');
 const uploadMiddleware = require('../middleware/upload');
+const animationMiddlware = require('../middleware/animations');
 
 const uploadContent = async(req, res, next) => {
     console.log('contentController[uploadContent]');
@@ -131,7 +132,10 @@ const updateAchievement = async(req, res) => {
             console.log(ownerUpdateResponse);
             if(ownerUpdateResponse._id) {
                 console.log('content owner updated!!');
+                let animation = null;
                 if(achievements.cash > 0) {
+                    let randomNumber = Math.floor(Math.random() * achievements.emoji.animations.length);
+                    animation = await animationMiddlware.getById(achievements.emoji.animations[randomNumber]);
                     await actionMiddleware.addAction(
                         updateContent.type == 'post' ? (actionType.EMOJI):(actionType.SECRET_EMOJI), 
                         client_id, 
@@ -148,7 +152,7 @@ const updateAchievement = async(req, res) => {
                         updateContent
                     );
                 }
-                res.json({user: client_fields_update, owner: owner_fields_update, content: content_field_update});
+                res.json({user: client_fields_update, owner: owner_fields_update, content: content_field_update, animationJson: animation ? animation.url : null});
             } else {
                 console.log('owner NOT updated');
             }

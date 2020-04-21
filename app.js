@@ -18,11 +18,15 @@ const searchRouter = require('./routes/search');
 const contentRouter = require('./routes/content');
 const videoRouter = require('./routes/video');
 const commentsRouter = require('./routes/comments');
-
-const demouploadRouter = require('./routes/demoupload');
+const emojiRouter = require('./routes/emoji');
+const animationRouter = require('./routes/animation');
 
 if (!fs.existsSync('./files')) {
   fs.mkdirSync('./files');
+}
+
+if (!fs.existsSync('./emojis')) {
+  fs.mkdirSync('./emojis');
 }
 
 var app = express();
@@ -45,17 +49,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', express.static(path.join(__dirname)));
-app.use('/emoji', express.static(path.join(__dirname, 'emojis')));
-app.use('/emoji_urls', (req, res) => {
-  let json = {};
-  fs.readdirSync('./emojis').forEach((fileName) => {
-      json[fileName.slice(0, fileName.indexOf('.')).toUpperCase().replace('-', '_')] = {
-        url: URL.generateUrl('', `emoji/${fileName}`),
-        value: Math.floor((Math.random() * 10) + 1)
-      };
-  });
-  res.json(json)
-});
+app.use('/emoji', emojiRouter);
+app.use('/animation', animationRouter);
 app.use('/video', videoRouter);
 app.use('/users', usersRouter);
 app.use('/actions', actionsRouter);
@@ -64,7 +59,8 @@ app.use('/content', tokenMiddleware.verify, contentRouter);
 app.use('/comment', tokenMiddleware.verify, commentsRouter);
 app.use('/refreshToken', tokenMiddleware.refresh);
 
-app.use('/demoupload', demouploadRouter);
+app.use('/demoupload', express.static(path.join(__dirname, 'routes', 'demoupload.html')));
+app.use('/uploademoji', express.static(path.join(__dirname, 'routes', 'uploademoji.html')));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

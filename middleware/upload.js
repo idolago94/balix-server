@@ -92,6 +92,7 @@ const compress = async(req, res, next) => {
 module.exports = {
   content: multer({storage: storageContent, limits: {fieldSize: 4*1000*1000}}),
   profile: multer({storage: storageProfile}),
+  emoji: multer({dest: 'emojis/'}),
   deleteFromStorage,
   compress
 }

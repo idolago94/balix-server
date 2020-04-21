@@ -1,18 +1,14 @@
 var express = require('express');
 var router = express.Router();
-var path = require('path');
-const fs = require("fs");
-const URL = require('../helpers/path');
+const emojiController = require('../controllers/emoji');
+const uploadMiddleware = require('../middleware/upload');
 
-/* GET home page. */
-router.get('/get', express.static(path.join(__dirname, 'emojis')));
+router.get('/all', emojiController.getAll);
 
-router.get('/get', (req, res, next) => {
-    let json = {};
-    fs.readdirSync().forEach((fileName) => {
-        json[fileName.slice(0, fileName.indexOf('.'))] = URL.generateUrl(`emoji/${fileName}`);
-    });
-    res.json(json)
-})
+router.post('/add', uploadMiddleware.emoji.single('file'), emojiController.addEmoji);
+
+router.delete('/delete', emojiController.deleteEmoji);
+
+router.put('/update', emojiController.updateEmoji);
 
 module.exports = router;

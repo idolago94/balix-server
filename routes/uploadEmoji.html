@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <title>Upload Emoji</title>
+</head>
+<body>
+    <div id="upload-forms" style="display: flex; flex-direction: row">
+        <div>
+            <div style="font-size: 20px; margin: 10px">Upload Emoji Screen:</div>
+            <form class="mt-4"
+            action="/emoji/add"
+            method="POST"
+            enctype="multipart/form-data"
+            >
+                <div class="form-group">
+                    <div>Emoji file(.png): </div>
+                    <input
+                        type="file"
+                        name="file"
+                        id="input"
+                        class="form-control-file border"
+                    />
+                </div>
+                <div class="form-group">
+                    <div>Name: </div>
+                    <input 
+                        type="text"
+                        name="name"
+                    />  
+                </div>
+                <div class="form-group">
+                    <div>Value: </div>
+                    <input 
+                        type="number"
+                        name="value"
+                    />  
+                </div>
+            
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+        <div>
+            <div style="font-size: 20px; margin: 10px">Upload Animation Screen:</div>
+            <form class="mt-4"
+            action="/animation/add"
+            method="POST"
+            >
+                <div class="form-group">
+                    <div>Animation text(json): </div>
+                    <input
+                        type="text"
+                        name="json"
+                        class="form-control-file border"
+                    />
+                </div>
+                <div class="form-group">
+                    <div>Name: </div>
+                    <input 
+                        type="text"
+                        name="name"
+                    />  
+                </div>
+            
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+    <div id="lists" style="display: flex; flex-direction: row">
+        <div style="padding: 10px" id="animations-list">Animation list: </div>
+        <div style="padding: 10px" id="emojis-list">Emojis list: </div>
+    </div>
+    <div id="update-form"></div>
+</body>
+
+<script>
+    function getAnimationsList() {
+        fetch('http://localhost:8080/animation/all')
+        .then(res => res.json()).then(result => {
+            result.map(anim => {
+                let div = document.createElement('div');
+                div.innerHTML = `#${anim._id} ${anim.name}`;
+                div.onclick = () => {
+                    let newItem = document.createElement('li');
+                    newItem.innerHTML = anim._id;
+                    newItem.onclick = (e) => {
+                        e.target.remove();
+                    };
+                    $('#update-list').append(newItem);
+                }
+                $('#animations-list').append(div);
+            });
+        })
+    }
+
+    function getEmojisList() {
+        fetch('http://localhost:8080/emoji/all')
+        .then(res => res.json()).then(result => {
+            result.map(emoji => {
+                let div = document.createElement('div');
+                div.innerHTML = `#${emoji._id} ${emoji.name} ${emoji.value}$ [${emoji.animations.join(', ')}]`;
+                let image = document.createElement('img');
+                image.src = emoji.url;
+                image.style = "width: 20px; height: 20px; padding-left: 10px";
+                div.append(image);
+                div.addEventListener('click', () => {
+                    buildUpdateEmojiForm(emoji);
+                });
+                $('#emojis-list').append(div);
+            });
+        })
+    }
+
+    function buildUpdateEmojiForm(emojiData) {
+        // name form field
+        let nameField = document.createElement('div');
+        nameField.class = "form-group";
+        nameField.innerHTML = "Name: ";
+        let nameInput = document.createElement('input');
+        nameInput.type = "text";
+        nameInput.name = "name";
+        nameInput.value = emojiData.name;
+        nameInput.id = "name-input";
+        nameField.append(nameInput);
+        // value form field
+        let valueField = document.createElement('div');
+        valueField.class = "form-group";
+        valueField.innerHTML = "Value: ";
+        let valueInput = document.createElement('input');
+        valueInput.type = "number";
+        valueInput.name = "value";
+        valueInput.value = emojiData.value;
+        valueInput.id = "value-input";
+        valueField.append(valueInput);
+        // animations form field
+        let list = document.createElement('ul');
+        list.id = 'update-list';
+        emojiData.animations.map(anim => {
+            let listItem = document.createElement('li');
+            listItem.innerHTML = anim;
+            listItem.onclick = (e) => {
+                e.target.remove();
+            };
+            list.append(listItem);
+        });
+        
+        let submitButton = document.createElement('label');
+        submitButton.style = "border-color: black; background-color: lightblue";
+        submitButton.innerHTML = "Submit";
+        submitButton.onclick = () => {
+            let animations_array = $('#update-list').children();
+            animations_array = animations_array.toArray().map(item => item.innerHTML);
+            let data = {
+                name: $('#name-input').val(),
+                value: $('#value-input').val(),
+                animations: animations_array
+            };
+            fetch('http://localhost:8080/emoji/update?id=' + emojiData._id, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+        }
+
+        $('#update-form').empty();
+        $('#update-form').append(nameField);
+        $('#update-form').append(valueField);
+        $('#update-form').append(list);
+        $('#update-form').append(submitButton);
+
+    }
+
+   $(document).ready(() => {
+        getAnimationsList();
+        getEmojisList();
+   })
+</script>
+
+<style>
+    .remove {
+        opacity: 0.5;
+    }
+</style>
+
+</html>
