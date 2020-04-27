@@ -9,19 +9,6 @@ const handleSearch = async(req, res) => {
     res.json(results);
 }
 
-const addProfile = (arrUsers) => {
-    return new Promise(async(resolve) => {
-        let newArr = [];
-        await arrUsers.map(async(user, i) => {
-            let profileUser = await contentMiddleware.getSingleContent(user.profileImage);
-            newArr.push(Object.assign(user, {profileImage: profileUser}));
-            if(i == arrUsers.length-1) {
-                resolve(newArr);
-            }
-        });
-    })
-}
-
 module.exports = {
     handleSearch: handleSearch
 }

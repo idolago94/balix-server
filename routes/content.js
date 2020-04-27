@@ -9,7 +9,7 @@ router.get('/getAll', contentController.getAll);
 
 router.put('/update', contentController.updateAchievement);
 
-router.get('/userContent', contentController.getUserContent);
+// router.get('/userContent', contentController.getUserContent);
 
 router.get('/getContents', contentController.getSomeContents);
 

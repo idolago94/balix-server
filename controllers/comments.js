@@ -9,7 +9,7 @@ const getContentComments = async(req, res) => {
 
 const addComment = async(req, res) => {
     console.log('CommentsController[addComment]');
-    let user_id = req.query.id;
+    let user_id = req.headers.user;
 
     let content_id = req.body.content_id;
     let comment = req.body.comment;

@@ -69,7 +69,7 @@ const startFollow = async(req, res) => {
     console.log('usersController[startFollow]');
 
     // client id
-  let user_id = req.query.id;
+  let user_id = req.headers.user;
   // user to start follow
   let start_follow_user_id = req.body.user;
 
@@ -94,7 +94,7 @@ const startFollow = async(req, res) => {
 const stopFollow = async(req, res) => {
     console.log('usersController[stopFollow]');
     // client id
-    let user_id = req.query.id;
+    let user_id = req.headers.user;
     // user to stop follow id
     let user_stop_follow_id = req.body.user;
 
@@ -120,7 +120,7 @@ const stopFollow = async(req, res) => {
 const buyPackage = async(req, res) => {
     console.log('usersController[buyPackage]');
 
-    let client = await userMiddleware.getUser(req.query.id);
+    let client = await userMiddleware.getUser(req.headers.user);
     let recieveValues = req.body.recieve;
 
     client.cash = client.cash + recieveValues.cash;
@@ -134,7 +134,7 @@ const buyPackage = async(req, res) => {
 
 const updateProfileImage = async(req, res) => {
     console.log('userController[updateProfileImage]');
-    let user_id = req.query.id;
+    let user_id = req.headers.user;
     let file = req.file;
 
         let updatedProfile = await userMiddleware.updateUserProfileImage(user_id, file);
@@ -149,7 +149,7 @@ const updateProfileImage = async(req, res) => {
 const updateKeywords = async(req, res) => {
     console.log('userController[updateKeywords]');
 
-    let user_id = req.query.id;
+    let user_id = req.headers.user;
     let keywords_arr = req.body.keywords;
 
     let keywords = await userMiddleware.updateUserKeywords(user_id, keywords_arr);
@@ -157,7 +157,7 @@ const updateKeywords = async(req, res) => {
 }
 
 const updateUser = async(req, res) => {
-  let id = req.query.id;
+  let id = req.headers.user;
   let fields = req.body;
 
   let response = await userMiddleware.updateUser(id, fields);
@@ -165,7 +165,7 @@ const updateUser = async(req, res) => {
 }
 
 const addExtra = async(req, res, next) => {
-  let user_id = req.query.id;
+  let user_id = req.headers.user;
   let cost = req.body.cost;
 
   let user = await userMiddleware.getUser(user_id);

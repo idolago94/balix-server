@@ -3,7 +3,7 @@ const actionType = require('../helpers/actions.type');
 
 const getActions = async(req, res) => {
     console.log('actionController[getActions]');
-    let user_id = req.query.id;
+    let user_id = req.headers.user;
     let response = await actionMiddleware.getUserActions(user_id);
     res.json(response);
 }

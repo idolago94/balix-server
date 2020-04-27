@@ -7,7 +7,7 @@ const animationMiddlware = require('../middleware/animations');
 
 const uploadContent = async(req, res, next) => {
     console.log('contentController[uploadContent]');
-    let user_id = req.query.id; // String
+    let user_id = req.headers.user;
     let secret_mode = req.query.secret;
     let file = {...req.file, ...req.body, path: req.filePath};
     console.log('file upload: ', req.file);
@@ -26,7 +26,7 @@ const uploadContent = async(req, res, next) => {
 }
 
 const addSecretView = async(req, res, next) => {
-    let user_id = req.query.id;
+    let user_id = req.headers.user;
     let content = req.body.content;
     let cost = req.body.content.entrance;
     console.log('contentController[addSecretView]', {cost});
@@ -59,7 +59,7 @@ const addSecretView = async(req, res, next) => {
 }
 
 const getAll = async(req, res) => {
-    console.log('imageController[getAll]');
+    console.log('contentCpntroller[getAll]');
     let response = await contentMiddleware.getAllContents();
     res.json(response);
 }
@@ -68,7 +68,7 @@ const updateAchievement = async(req, res) => {
     console.log('contentController[updateAchievement]');
 
     // id of the client
-    let client_id = req.query.id;
+    let client_id = req.headers.user;
     // id of the image
     let content_id = req.body.content_id;
     // achievements data({cash, hearts})
@@ -164,12 +164,12 @@ const updateAchievement = async(req, res) => {
     }
 }
 
-const getUserContent = async(req, res) => {
-    console.log('contentController[getUserContent]');
-    let user_id = req.query.id;
-    let userContents = await contentMiddleware.getUserContent(user_id);
-    res.json(userContents);
-}
+// const getUserContent = async(req, res) => {
+//     console.log('contentController[getUserContent]');
+//     let user_id = req.query.id;
+//     let userContents = await contentMiddleware.getUserContent(user_id);
+//     res.json(userContents);
+// }
 
 const getSomeContents = async(req, res) => {
     console.log('contentController[getSomeContents]');
@@ -188,13 +188,13 @@ const getSomeContents = async(req, res) => {
 }
 
 const getTop = async(req, res) => {
-    console.log('imageController[getTop]');
+    console.log('contentCpntroller[getTop]');
     let response = await contentMiddleware.getTopContents();
     res.json(response);
 }
 
 const deleteContent = async(req, res) => {
-    let user_id = req.query.id;
+    let user_id = req.headers.user;
     let secret = req.query.secret;
     let delete_ids = req.body;
 
@@ -218,7 +218,7 @@ module.exports = {
     uploadContent: uploadContent,
     getAll: getAll,
     updateAchievement: updateAchievement,
-    getUserContent: getUserContent,
+    // getUserContent: getUserContent,
     getSomeContents: getSomeContents,
     addSecretView: addSecretView,
     getTop: getTop,
