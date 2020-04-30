@@ -20,6 +20,8 @@ const videoRouter = require('./routes/video');
 const commentsRouter = require('./routes/comments');
 const emojiRouter = require('./routes/emoji');
 const animationRouter = require('./routes/animation');
+// const chatRoomRouter = require('./routes/chatRoom');
+// const messageRouter = require('./routes/message');
 
 if (!fs.existsSync('./files')) {
   fs.mkdirSync('./files');
@@ -49,6 +51,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', express.static(path.join(__dirname)));
+app.use('/privacypolicy', express.static(path.join(__dirname, 'documents', 'Privacy Policy.pdf')));
+app.use('/terms', express.static(path.join(__dirname, 'documents', 'Terms of Service.pdf')));
+
+
 app.use('/emoji', emojiRouter);
 app.use('/animation', animationRouter);
 app.use('/video', videoRouter);
@@ -58,6 +64,8 @@ app.use('/search', tokenMiddleware.verify, searchRouter);
 app.use('/content', tokenMiddleware.verify, contentRouter);
 app.use('/comment', tokenMiddleware.verify, commentsRouter);
 app.use('/refreshToken', tokenMiddleware.refresh);
+// app.use('/chatRoom', chatRoomRouter);
+// app.use('/message', messageRouter);
 
 app.use('/demoupload', express.static(path.join(__dirname, 'routes', 'demoupload.html')));
 app.use('/uploademoji', express.static(path.join(__dirname, 'routes', 'uploadEmoji.html')));
