@@ -8,7 +8,7 @@ const hash = password => {
 }
 
 const checkPassword = (password, hashPassword) => {
-    console.log('bcryptMiddleware[checkPassword]');
+    console.log('bcryptMiddleware[checkPassword]', password, hashPassword);
     let check = bcrypt.compareSync(password, hashPassword);
     return check;
 }

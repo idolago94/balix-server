@@ -179,6 +179,12 @@ const addExtra = async(req, res, next) => {
   }
 }
 
+const deleteUser = async(req, res) => {
+  let user_id = req.headers.user;
+  let response = await userMiddleware.deleteUser(user_id);
+  res.json(response);
+}
+
 module.exports = {
     getSingleUser: getSingleUser,
     signup: signup,
@@ -191,5 +197,6 @@ module.exports = {
     updateProfileImage: updateProfileImage,
     updateKeywords: updateKeywords,
     updateUser: updateUser,
-    addExtra: addExtra
+    addExtra: addExtra,
+    deleteUser
 }

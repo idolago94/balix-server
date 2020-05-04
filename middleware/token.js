@@ -23,6 +23,8 @@ const verify = (req, res, next) => {
         jwt.verify(token, secret, (err, decode) => {
             if(!err && user_id == decode.user_id) {
                 next();
+            } else if(!err && decode.admin) {
+                next();
             } else if(err.name == 'TokenExpiredError') {
                 res.json({error: 'TokenExpiredError'});
             } else {

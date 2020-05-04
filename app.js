@@ -20,8 +20,9 @@ const videoRouter = require('./routes/video');
 const commentsRouter = require('./routes/comments');
 const emojiRouter = require('./routes/emoji');
 const animationRouter = require('./routes/animation');
-// const chatRoomRouter = require('./routes/chatRoom');
-// const messageRouter = require('./routes/message');
+const chatRoomRouter = require('./routes/chatRoom');
+const messageRouter = require('./routes/message');
+const adminRouter = require('./routes/admin');
 
 if (!fs.existsSync('./files')) {
   fs.mkdirSync('./files');
@@ -64,8 +65,9 @@ app.use('/search', tokenMiddleware.verify, searchRouter);
 app.use('/content', tokenMiddleware.verify, contentRouter);
 app.use('/comment', tokenMiddleware.verify, commentsRouter);
 app.use('/refreshToken', tokenMiddleware.refresh);
-// app.use('/chatRoom', chatRoomRouter);
-// app.use('/message', messageRouter);
+app.use('/chatRoom', chatRoomRouter);
+app.use('/message', messageRouter);
+app.use('/admin', adminRouter);
 
 app.use('/demoupload', express.static(path.join(__dirname, 'routes', 'demoupload.html')));
 app.use('/uploademoji', express.static(path.join(__dirname, 'routes', 'uploadEmoji.html')));

@@ -165,6 +165,11 @@ const updateUserSecrets = async(user_id, secret_id) => {
     }
 }
 
+const deleteUser = async(id) => {
+    let response = await User.findByIdAndDelete(id);
+    return response;
+}
+
 module.exports = {
     getUser: getUser,
     saveUser: saveUser,
@@ -179,5 +184,6 @@ module.exports = {
     emailExist: emailExist,
     updateUserProfileImage: updateUserProfileImage,
     updateUserKeywords: updateUserKeywords,
-    updateUserSecrets: updateUserSecrets
+    updateUserSecrets: updateUserSecrets,
+    deleteUser
 }

@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const userController = require('../controllers/users');
+const  userController = require('../controllers/users');
 const upload = require('../middleware/upload');
 const tokenMiddleware = require('../middleware/token');
 
@@ -27,5 +27,7 @@ router.put('/updateKeywords', tokenMiddleware.verify, userController.updateKeywo
 router.put('/update', tokenMiddleware.verify, userController.updateUser);
 
 router.put('/addExtra', tokenMiddleware.verify, userController.addExtra);
+
+router.delete('/delete', tokenMiddleware.verify, userController.deleteUser);
 
 module.exports = router;
