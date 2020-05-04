@@ -34,6 +34,27 @@ const verify = (req, res, next) => {
     }
 }
 
+const adminVerify = (req, res, next) => {
+    let token = req.headers['authorization'];
+    if(!token) {
+        res.json({error: 'Authentication error.'});
+    } else {
+        if (token.startsWith('Bearer ')) {
+          // Remove Bearer from string
+          token = token.slice(7, token.length);
+        }
+        jwt.verify(token, secret, (err, decode) => {
+            if(!err && decode.admin) {
+                next();
+            } else if(err.name == 'TokenExpiredError') {
+                res.json({error: 'TokenExpiredError'});
+            } else {
+                res.json({error: 'Authentication error.'});
+            }
+        });
+    }
+}
+
 const refresh = (req, res, next) => {
     console.log('tokenModdleware[refresh]');
     let user_id = req.query.id;
@@ -54,4 +75,4 @@ const refresh = (req, res, next) => {
     });
 }
 
-module.exports = {generate, verify, refresh};
+module.exports = {generate, verify, refresh, adminVerify};
