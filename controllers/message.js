@@ -40,6 +40,8 @@ const sendMessageBySocket = (message_data) => {
             let otherUser = message_data.receive_user;
             roomData = await chatRoomMiddleware.createRoom([otherUser, user_id]);
             room_id = roomData._id;
+        } else {
+            await chatRoomMiddleware.updateRoom(room_id, {last_message: new Date()});
         }
         let sendResponse = await messageMiddleware.addMessage(room_id, user_id, context);
         resolve(sendResponse);
