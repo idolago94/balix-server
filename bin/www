@@ -15,11 +15,26 @@ var http = require('http');
 var port = normalizePort(process.env.PORT || '8080');
 app.set('port', port);
 
+
 /**
  * Create HTTP server.
  */
 
 var server = http.createServer(app);
+
+// socket.io
+
+const MessageController = require('../controllers/message');
+const io = require("socket.io").listen(server);
+io.on("connection", socket => {
+  console.log("a user connected :D");
+  socket.on("send message", async(data) => {
+    console.log("send message", data);
+    // save the message in the database
+    let response = await MessageController.sendMessageBySocket(data);
+    io.emit(`msg:${data.receive_user}`, response);
+  });
+});
 
 /**
  * Listen on provided port, on all network interfaces.
