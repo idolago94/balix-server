@@ -1,6 +1,13 @@
 const ChatRoom = require('../models/ChatRoom');
 
+const getAll = async() => {
+    console.log('ChatRoomMiddleware[getAll]');
+    let rooms = await ChatRoom.find({});
+    return rooms;
+}
+
 const getRoomById = async(room_id) => {
+    console.log('ChatRoomMiddleware[getRoomById]');
     let room = await ChatRoom.findById(room_id);
     return room;
 }
@@ -11,11 +18,16 @@ const getUserRooms = async(user_id) => {
 }
 
 const getRoomByUsers = async(users_array) => {
-    let room = await ChatRoom.find({ participants: users_array });
+    console.log('ChatRoomMiddleware[getRoomByUsers]');
+    let room = await ChatRoom.find({ $and: [ 
+        {participants: { $all: users_array }}, 
+        {participants: { $size: users_array.length }} 
+    ]});
     return room;
 }
 
 const createRoom = async(participants_array) => {
+    console.log('ChatRoomMiddleware[createRoom]');
     let newRoom = new ChatRoom({ participants: participants_array });
     let result = await newRoom.save();
     return result;
@@ -32,6 +44,7 @@ const deleteRoom = async(room_id) => {
 }
 
 module.exports = {
+    getAll,
     getRoomById,
     getUserRooms,
     getRoomByUsers,

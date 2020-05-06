@@ -9,10 +9,14 @@ const getRoomMessages = async(req, res) => {
 }
 
 const sendMessage = async(req, res) => {
-    let room_id = req.quey.id;
+    let room_id = req.query.id;
     let user_id = req.headers.user;
     let context = req.body.context;
-    let roomData = await chatRoomMiddleware.getRoomById(room_id);
+    let roomData = null;
+    if(room_id != '') {
+        roomData = await chatRoomMiddleware.getRoomById(room_id);
+    }
+
     if(!roomData) {
         let otherUser = req.body.receive;
         roomData = await chatRoomMiddleware.createRoom([otherUser, user_id]);

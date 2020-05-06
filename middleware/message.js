@@ -1,6 +1,7 @@
 const Message = require('../models/Message');
 
 const addMessage = async(room_id, user_id, context) => {
+    console.log('MessageMiddleware[addMessage]');
     let newMessage = new Message({
         room_id,
         user_id,
