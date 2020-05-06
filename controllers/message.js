@@ -27,24 +27,23 @@ const sendMessage = async(req, res) => {
 }
 
 const sendMessageBySocket = (message_data) => {
+    console.log('sendMessageBySocket')
     return new Promise(async(resolve, reject) => {
         let room_id = message_data.room_id;
         let user_id = message_data.user_id;
         let context = message_data.context;
+
         let roomData = null;
-        if(room_id != '') {
-            roomData = await chatRoomMiddleware.getRoomById(room_id);
-        }
-    
-        if(!roomData) {
+        if(room_id == '') {
             let otherUser = message_data.receive_user;
             roomData = await chatRoomMiddleware.createRoom([otherUser, user_id]);
             room_id = roomData._id;
         } else {
+            roomData = await chatRoomMiddleware.getRoomById(room_id);
             await chatRoomMiddleware.updateRoom(room_id, {last_message: new Date()});
         }
         let sendResponse = await messageMiddleware.addMessage(room_id, user_id, context);
-        resolve(sendResponse);
+        resolve({message: sendResponse, room: roomData});
     })
 }
 
