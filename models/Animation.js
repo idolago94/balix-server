@@ -4,7 +4,7 @@ const Animation = mongoose.model('Animations',
  {
    url: String,
    name: String,
-   uploadDate: Date
+   uploadDate: {type: Date, default: new Date()}
  });
 
  module.exports=Animation;

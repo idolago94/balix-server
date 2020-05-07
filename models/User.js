@@ -16,7 +16,7 @@ const userSchema = new Schema({
    cash_earned: {type: Number, default: 0},
    hearts: {type: Number, default: 0},
    hearts_earned: {type: Number, default: 0},
-   conversations: {type: Array, default: []}, // array of conversation_id
+   // conversations: {type: Array, default: []}, // array of conversation_id
    keywords: {type: Array, text: true, default: []}, // array of strings
    live: String || undefined,
    // story: Array || undefined // array of objects({id, contentType, uploadDate, cash, hearts, base64})
@@ -24,7 +24,9 @@ const userSchema = new Schema({
    limit_of_contents: { type: Number, default: 9 },
    secrets: {type: Array, default: []},
    country: String || undefined,
-   date_of_birth: Date || undefined
+   date_of_birth: Date || undefined,
+   chat_rooms: {type: Object, default: {}}, // object of chat rooms and last visit {room_id: last_visit}
+   created_at: {type: Date, default: new Date()}
 });
 userSchema.index({username: "text", keywords: "text"});
 const User = mongoose.model('Users', userSchema);

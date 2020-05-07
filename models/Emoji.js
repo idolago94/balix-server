@@ -7,7 +7,7 @@ const Emoji = mongoose.model('Emojis',
   value: Number,
 //    active: Boolean,
   animations: {type: Array, default: []},
-  uploadDate: Date
+  uploadDate: {type: Date, default: new Date()}
  });
 
  module.exports=Emoji;
