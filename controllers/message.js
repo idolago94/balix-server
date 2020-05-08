@@ -40,7 +40,7 @@ const sendMessageBySocket = (message_data) => {
             room_id = roomData._id;
         } else {
             roomData = await chatRoomMiddleware.getRoomById(room_id);
-            await chatRoomMiddleware.updateRoom(room_id, {last_message: new Date()});
+            romomData = await chatRoomMiddleware.updateRoom(room_id, {last_message: new Date()});
         }
         let sendResponse = await messageMiddleware.addMessage(room_id, user_id, context);
         resolve({message: sendResponse, room: roomData});
