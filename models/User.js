@@ -26,7 +26,8 @@ const userSchema = new Schema({
    country: String || undefined,
    date_of_birth: Date || undefined,
    chat_rooms: {type: Object, default: {}}, // object of chat rooms and last visit {room_id: last_visit}
-   created_at: {type: Date, default: new Date()}
+   created_at: {type: Date, default: new Date()},
+   report: {type: Array, default: []}
 });
 userSchema.index({username: "text", keywords: "text"});
 const User = mongoose.model('Users', userSchema);

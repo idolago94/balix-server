@@ -30,10 +30,15 @@ const getUserContent = async(user_id) => {
     return response;
 }
 
-const updateContent = async(content_id, achievements) => {
+const updateAchievements = async(content_id, achievements) => {
     console.log('contentMiddleware[updateContent]');
     let response = await Content.findByIdAndUpdate(content_id, {...achievements, lastUpdate: new Date()});
     return response;
+}
+
+const updateContent = async(content_id, field_to_update) => {
+    let res = await Content.findByIdAndUpdate(content_id, field_to_update);
+    return res;
 }
 
 const getAllContents = async() => {
@@ -56,8 +61,9 @@ module.exports = {
     saveContent: saveContent,
     getSingleContent: getSingleContent,
     getUserContent: getUserContent,
-    updateContent: updateContent,
+    updateContent: updateAchievements,
     getAllContents: getAllContents,
     getTopContents: getTopContents,
-    deleteById: deleteById
+    deleteById: deleteById,
+    update: updateContent
 }
