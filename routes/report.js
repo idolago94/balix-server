@@ -1,9 +1,10 @@
 var express = require('express');
 var router = express.Router();
 const reportController = require('../controllers/report');
+const tokenMiddleware = require('../middleware/token');
 
 
-router.put('/', reportController.report);
+router.put('/', tokenMiddleware.verify, reportController.report);
 
 router.get('/inappropiate', (req, res) => {
     let inappropiate_options = [

@@ -69,7 +69,7 @@ app.use('/refreshToken', tokenMiddleware.refresh);
 app.use('/chatRoom', chatRoomRouter);
 app.use('/message', messageRouter);
 app.use('/admin', adminRouter);
-app.use('/report', tokenMiddleware.verify, reportRouter);
+app.use('/report', reportRouter);
 
 app.use('/demoupload', express.static(path.join(__dirname, 'routes', 'demoupload.html')));
 app.use('/uploademoji', express.static(path.join(__dirname, 'routes', 'uploadEmoji.html')));
