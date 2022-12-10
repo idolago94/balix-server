@@ -12,7 +12,7 @@
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "ejs": "^3.0.1",
-    "express": "~4.16.0",
+    "express": "~4.17.3",
     "externalip": "^1.0.2",
     "fluent-ffmpeg": "^2.1.2",
     "http-errors": "~1.6.2",
